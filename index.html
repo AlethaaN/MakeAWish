@@ -9,10 +9,35 @@
             --glass: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.15);
             --accent: #007AFF;
+            --heaven-accent: #f0f9ff;
+            --hell-accent: #ff4d4d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; color: white; font-family: 'Segoe UI', sans-serif; }
+
+        /* LANGUAGE SELECTOR IN MODAL */
+        .lang-select-box {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .lang-option {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        .lang-option.active {
+            background: white;
+            color: black;
+            border-color: white;
+        }
 
         /* BG Universe */
         .universe-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0f172a 0%, #000 100%); z-index: -2; transition: all 3s ease; }
@@ -20,8 +45,9 @@
         @keyframes drift { from { transform: translate(-20%, -20%); } to { transform: translate(0, 0); } }
 
         /* WARNING MODAL */
-        #warning-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 100; }
-        .warning-box { max-width: 320px; padding: 30px; background: #111; border: 1px solid #ff3b30; border-radius: 25px; text-align: center; }
+        #warning-modal { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .warning-box { width: 100%; max-width: 400px; text-align: center; }
+        .warning-tag { color: #ff3b30; letter-spacing: 5px; font-size: 0.8em; margin-bottom: 10px; }
 
         /* CAMERA SECTION */
         #camera-section { display: none; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 80px; }
@@ -35,56 +61,41 @@
         .ai-text-ui { position: absolute; width: 100%; text-align: center; top: 15%; font-size: 10px; letter-spacing: 3px; color: var(--accent); display: none; }
         @keyframes scanLineMove { 0% { top: 0%; } 100% { top: 100%; } }
 
-        /* LOADING: SOUL ASCENSION EFFECT */
+        /* LOADING */
         #loading-section { display: none; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        .soul-particle { 
-            position: absolute; bottom: -20px; width: 4px; height: 15px; 
-            background: white; border-radius: 2px; opacity: 0;
-            filter: blur(1px); animation: ascend 2s infinite linear;
-        }
-        @keyframes ascend {
-            0% { transform: translateY(0); opacity: 0; }
-            20% { opacity: 0.8; }
-            100% { transform: translateY(-100vh); opacity: 0; }
-        }
+        .soul-particle { position: absolute; bottom: -20px; width: 4px; height: 15px; background: white; border-radius: 2px; opacity: 0; filter: blur(1px); animation: ascend 2s infinite linear; }
+        @keyframes ascend { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh); opacity: 0; } }
         .orb-loader { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, #fff, transparent); filter: blur(10px); animation: pulseOrb 1.5s infinite alternate; z-index: 2; }
         @keyframes pulseOrb { from { transform: scale(0.9); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
 
-        /* RESULT THEMES & ANIMATIONS */
-        .heaven-mode { background: radial-gradient(circle at center, #fff9e6 0%, #7ec8ff 50%, #1e3a8a 100%) !important; }
-        .hell-mode { background: radial-gradient(circle at center, #300 0%, #100 70%, #000 100%) !important; }
-
-        /* IMPROVED TEXT ANIMATIONS */
-        .res-text-main { 
-            font-size: 3em; margin-bottom: 10px; opacity: 0;
-            animation: textEntrance 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards, float 6s ease-in-out infinite;
-        }
-        @keyframes textEntrance {
-            from { letter-spacing: -10px; filter: blur(10px); opacity: 0; transform: scale(0.8); }
-            to { letter-spacing: 4px; filter: blur(0); opacity: 1; transform: scale(1); }
-        }
+        /* RESULT THEMES */
+        .heaven-mode { background: radial-gradient(circle at center, #2e5171 0%, #0d1b2a 100%) !important; }
+        .hell-mode { background: radial-gradient(circle at center, #2a0505 0%, #000 100%) !important; }
+        .res-text-main { font-size: 3em; margin-bottom: 10px; opacity: 0; animation: textEntrance 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards, float 6s ease-in-out infinite; }
+        @keyframes textEntrance { from { letter-spacing: -10px; filter: blur(10px); opacity: 0; transform: scale(0.8); } to { letter-spacing: 4px; filter: blur(0); opacity: 1; transform: scale(1); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        .heaven-title-font { font-family: 'Garamond', serif !important; text-shadow: 0 0 20px rgba(255,255,255,0.8); }
-        .heaven-mot-font { font-family: 'Playfair Display', serif !important; font-style: italic; }
-        
-        .hell-title-font { font-family: 'Impact', sans-serif !important; color: #ff3b30 !important; text-shadow: 0 0 10px black; }
-        .hell-mot-font { font-family: 'Special Elite', monospace !important; color: #ff3b30 !important; }
-
         /* UI ELEMENTS */
-        .fullscreen-container { width: 100%; height: 100%; position: relative; z-index: 10; padding: 40px; }
+        .fullscreen-container { width: 100%; height: 100%; position: relative; z-index: 10; padding: 20px; overflow-y: auto; scrollbar-width: none; }
+        .fullscreen-container::-webkit-scrollbar { display: none; }
         .content-wrapper { width: 100%; max-width: 380px; text-align: center; margin: 0 auto; }
         input { width: 100%; padding: 18px; margin: 10px 0; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; color: white; outline: none; }
-        .btn-primary { width: 100%; padding: 18px; margin-top: 15px; background: white; color: black; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; }
-        video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: -1; }
+        .btn-primary { width: 100%; padding: 18px; margin-top: 15px; background: white; color: black; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-primary:active { transform: scale(0.95); }
+        video#webcam { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: -1; }
 
         .shutter-btn { width: 85px; height: 85px; border: 4px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; }
         .shutter-inner { width: 65px; height: 65px; background: white; border-radius: 50%; transition: 0.3s; }
         .recording .shutter-inner { background: #ff3b30; border-radius: 12px; transform: scale(0.7); }
 
-        .info-card { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; margin-top: 20px; text-align: left; font-size: 0.8em; border: 1px solid rgba(255,255,255,0.1); }
-        .motivation-anim { opacity: 0; animation: fadeInMot 3s forwards 1.8s; }
-        @keyframes fadeInMot { from { opacity: 0; } to { opacity: 1; } }
+        .info-card { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; margin-top: 20px; text-align: left; font-size: 0.85em; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        
+        .video-container-premium { position: relative; margin: 25px 0; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.5); background: #111; }
+        .video-playback { width: 100%; display: block; object-fit: cover; aspect-ratio: 1/1; }
+        .player-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8); }
+
+        .heaven-mot-font { font-family: 'Georgia', serif; font-style: italic; color: #e2f3ff; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .hell-mot-font { font-family: 'Courier New', monospace; color: #ff5e5e; text-shadow: 0 0 10px rgba(255,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -93,161 +104,368 @@
 
     <div id="warning-modal">
         <div class="warning-box">
-            <h2 style="color:#ff3b30">PERINGATAN</h2>
-            <p style="margin: 15px 0; font-size: 0.9em;">Ritual ini akan menarik energi aura wajah. Harap bijaksana dalam menerima takdir.</p>
-            <button class="btn-primary" onclick="acceptWarning()">LANJUTKAN</button>
-            <button class="btn-primary" style="background:transparent; color:#888; border:1px solid #333" onclick="location.href='https://google.com'">BATAL</button>
+            <div class="lang-select-box">
+                <button class="lang-option active" id="btn-id" onclick="changeLang('id')">ID</button>
+                <button class="lang-option" id="btn-en" onclick="changeLang('en')">EN</button>
+            </div>
+            <div class="warning-tag" data-key="warn_tag">DETEKSI ENERGI</div>
+            <h1 data-key="warn_title" style="font-size: 1.5em; margin-bottom: 20px; letter-spacing: 2px;">RITUAL PENYELARASAN</h1>
+            <p data-key="warn_desc" style="color: #888; line-height: 1.6; font-size: 0.9em; margin-bottom: 25px;">
+                Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda saat ini.<br><br>
+                <b>Peringatan:</b> Hasil yang muncul adalah mutlak secara simulasi. Harap bijaksana dalam menerima takdir yang tertulis.
+            </p>
+            <button class="btn-primary" onclick="acceptWarning()" data-key="warn_btn">MEMULAI RITUAL</button>
         </div>
     </div>
 
     <div id="main-menu" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; justify-content:center;">
         <div class="content-wrapper">
-            <h1 style="font-weight: 200; letter-spacing: 5px; margin-bottom: 40px;">DIVINE WHISPER</h1>
+            <h1 style="font-weight: 200; letter-spacing: 8px; margin-bottom: 40px;">DIVINE WHISPER</h1>
             <input type="text" id="userName" placeholder="Nama Lengkap">
             <input type="date" id="userDOB">
-            <button class="btn-primary" onclick="startRitual()">MULAI RITUAL</button>
+            <button class="btn-primary" onclick="startRitual()" data-key="menu_btn">MULAI RITUAL</button>
         </div>
     </div>
 
     <div id="camera-section" class="fullscreen-container">
-        <div id="ai-ui" class="ai-text-ui">SCANNING SOUL VIBRATION... <br> <span id="vibration-val">0.00Hz</span></div>
+        <div id="ai-ui" class="ai-text-ui"><span data-key="cam_status">MENANGKAP RESONANSI JIWA...</span> <br> <span id="vibration-val">0.00Hz</span></div>
         <video id="webcam" autoplay muted playsinline></video>
         <div id="face-scanner-container">
             <div class="corner top-left"></div><div class="corner top-right"></div>
             <div class="corner bottom-left"></div><div class="corner bottom-right"></div>
             <div class="scanning-line"></div>
         </div>
-        <div class="shutter-btn" onclick="toggleRecord()" id="shutter"><div class="shutter-inner">🪐</div></div>
+        <div class="shutter-btn" onclick="toggleRecord()" id="shutter"><div class="shutter-inner"></div></div>
+        <p data-key="cam_hint" style="margin-top: 15px; font-size: 0.7em; opacity: 0.6; letter-spacing: 1px;">TAHAN UNTUK MENGIRIM PESAN KE SEMESTA</p>
     </div>
 
     <div id="loading-section" class="fullscreen-container">
         <div id="particle-container"></div>
         <div class="orb-loader"></div>
-        <h2 id="loading-txt" style="font-weight: 200; letter-spacing: 3px; z-index: 3;">MENGIRIM DOA...</h2>
+        <h2 id="loading-txt" data-key="load_txt" style="font-weight: 200; letter-spacing: 3px; z-index: 3;">MENGIRIM DOA...</h2>
         <p id="progress-percent" style="font-size: 2.5em; font-weight: 100; margin-top: 10px; z-index: 3;">0%</p>
     </div>
 
-    <div id="result-section" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; justify-content:center;">
-        <div class="content-wrapper">
+    <div id="result-section" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; ">
+        <div class="content-wrapper" style="padding-top: 50px;">
             <h2 id="res-title" class="res-text-main"></h2>
-            <p id="motivation-box" class="motivation-anim" style="margin-bottom: 30px; line-height: 1.6; font-size: 1.2em;"></p>
+            <p id="motivation-box" style="margin-bottom: 30px; line-height: 1.6; font-size: 1.1em;"></p>
 
             <div id="success-ui" style="display: none; margin-bottom: 20px;">
-                <p style="font-size: 0.7em; opacity: 0.6; letter-spacing: 2px;">TERKABUL PADA:</p>
-                <h3 id="target-date" style="margin: 5px 0;"></h3>
-                <div id="countdown" style="font-size: 2em; font-weight: 100;"></div>
+                <p data-key="res_manifest" style="font-size: 0.7em; opacity: 0.6; letter-spacing: 2px;">PROYEKSI MANIFESTASI PADA:</p>
+                <h3 id="target-date" style="margin: 5px 0; color: #82ccff;"></h3>
+                <div id="countdown" style="font-size: 1.5em; font-weight: 100;"></div>
             </div>
 
             <div class="info-card">
-                <p>NAMA: <span id="info-name" style="color:gold"></span></p>
-                <p>UMUR: <span id="info-age" style="font-weight:bold"></span> TAHUN</p>
+                <p><span data-key="info_name">NAMA</span>: <span id="info-name" style="color:#ffd700"></span></p>
+                <p><span data-key="info_age">USIA</span>: <span id="info-age"></span> <span data-key="info_years">TAHUN</span></p>
+                <p><span data-key="info_zod">ZODIAK</span>: <span id="info-zodiac" style="color:#00e5ff"></span></p>
             </div>
-            <button class="btn-primary" onclick="location.reload()" style="margin-top: 30px;">KEMBALI</button>
+
+            <div id="playback-container" style="display:none;">
+                <p data-key="res_archive" style="margin-top: 25px; font-size: 0.6em; letter-spacing: 3px; color: #aaa; text-transform: uppercase;">Arsip Frekuensi Suara</p>
+                <div class="video-container-premium">
+                    <video id="recorded-video" class="video-playback" controls></video>
+                    <div class="player-overlay"></div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="location.reload()" data-key="res_retry" style="margin-top: 20px; margin-bottom: 50px;">ULANGI RITUAL</button>
         </div>
     </div>
 
     <script>
-        const motivations = {
-            heaven: [
-                "Keinginanmu tentang masa depan cerah telah didengar oleh malaikat penjaga.",
-                "Cahaya dalam hatimu menghancurkan segala rintangan yang ada di depan mata.",
-                "Semesta tidak hanya mengabulkan, tapi juga memberikan yang lebih baik dari pintamu.",
-                "Ketulusanmu dalam berharap adalah frekuensi terkuat yang pernah kami scan.",
-                "Jawaban yang kau cari sedang dirajut oleh takdir yang indah.",
-                "Keberuntungan besar akan segera mengetuk pintu rumahmu.",
-                "Setiap niat baikmu adalah benih kebahagiaan yang kini mulai tumbuh."
-            ],
-            hell: [
-                "Keinginanmu berakar pada ego; semesta perlu waktu untuk membersihkannya.",
-                "Ada kegelapan yang menempel pada permohonanmu. Tenangkan jiwamu.",
-                "Pintu langit tertutup rapat karena niat yang kurang tulus terdeteksi.",
-                "Jangan meminta apa yang belum siap kau tanggung bebannya.",
-                "Frekuensi jiwamu terlalu rendah untuk menembus gerbang keajaiban.",
-                "Karma sedang menguji kesabaranmu sebelum memberikan jawaban.",
-                "Permohonan ini tertunda demi melindungimu dari hal yang tidak kau ketahui."
-            ]
+        let currentLang = 'id';
+        const translations = {
+            id: {
+                warn_tag: "DETEKSI ENERGI",
+                warn_title: "RITUAL PENYELARASAN",
+                warn_desc: "Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda saat ini.<br><br><b>Peringatan:</b> Hasil yang muncul adalah mutlak secara simulasi. Harap bijaksana dalam menerima takdir yang tertulis.",
+                warn_btn: "MEMULAI RITUAL",
+                menu_name_placeholder: "Nama Lengkap",
+                menu_btn: "MULAI RITUAL",
+                cam_status: "MENANGKAP RESONANSI JIWA...",
+                cam_hint: "TAHAN UNTUK MENGIRIM PESAN KE SEMESTA",
+                load_txt: "MENGIRIM DOA...",
+                res_manifest: "PROYEKSI MANIFESTASI PADA:",
+                info_name: "NAMA",
+                info_age: "USIA",
+                info_years: "TAHUN",
+                info_zod: "ZODIAK",
+                res_archive: "ARSIP FREKUENSI SUARA",
+                res_retry: "ULANGI RITUAL",
+                res_blessed: "DIRESTUI",
+                res_delayed: "TERTUNDA"
+            },
+            en: {
+                warn_tag: "ENERGY DETECTION",
+                warn_title: "ALIGNMENT RITUAL",
+                warn_desc: "This ritual will draw resonance from your facial and vocal vibrations. All manifestations are reflections of your current subconscious energy.<br><br><b>Warning:</b> Results are simulated and absolute. Please be wise in accepting the written destiny.",
+                warn_btn: "START RITUAL",
+                menu_name_placeholder: "Full Name",
+                menu_btn: "BEGIN RITUAL",
+                cam_status: "CAPTURING SOUL RESONANCE...",
+                cam_hint: "HOLD TO SEND MESSAGE TO UNIVERSE",
+                load_txt: "SENDING PRAYERS...",
+                res_manifest: "MANIFESTATION PROJECTED ON:",
+                info_name: "NAME",
+                info_age: "AGE",
+                info_years: "YEARS",
+                info_zod: "ZODIAC",
+                res_archive: "VOICE FREQUENCY ARCHIVE",
+                res_retry: "REPEAT RITUAL",
+                res_blessed: "BLESSED",
+                res_delayed: "DELAYED"
+            }
         };
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function changeLang(lang) {
+            currentLang = lang;
+            // Update UI switch
+            document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            
+            // Update static elements
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                el.innerHTML = translations[lang][key];
+            });
+
+            // Update placeholders
+            document.getElementById('userName').placeholder = translations[lang].menu_name_placeholder;
+        }
+
+                const motivations = {
+            id: {
+                heaven: [
+                    "Keinginanmu selaras dengan hukum kelimpahan semesta. Cahaya kini menuntunmu.",
+                    "Setiap langkah kecilmu kini dipandu oleh intuisi ilahi yang tidak akan meleset.",
+                    "Pintu yang selama ini tertutup akan terbuka dengan kunci ketulusan yang kau miliki.",
+                    "Bintang-bintang sedang berkonspirasi untuk mewujudkan impianmu menjadi kenyataan.",
+                    "Kesabaranmu adalah investasi; saatnya memanen hasil dari doa-doa sunyimu selama ini.",
+                    "Semesta mendengar bisikan hatimu bahkan saat kau tak sanggup mengucapkannya.",
+                    "Kebaikan yang kau tanam secara diam-diam akan berbuah kebahagiaan yang berisik.",
+                    "Engkau adalah magnet bagi keajaiban; tetaplah berada di jalur kasih sayang.",
+                    "Takdir baik sedang mengetuk pintu, bukalah dengan senyuman dan rasa syukur.",
+                    "Cahaya dalam dirimu jauh lebih terang daripada rintangan yang ada di hadapanmu.",
+                    "Resonansi jiwamu memancarkan frekuensi kemakmuran yang tak terbatas.",
+                    "Apa yang kau cari sedang mencarimu dengan kecepatan yang tak terduga.",
+                    "Jangan takut akan kegelapan, karena engkau sendiri adalah mercusuar bagi masa depanmu.",
+                    "Energi positifmu telah menarik frekuensi keberuntungan dari segala penjuru langit.",
+                    "Siklus kemalanganmu telah berakhir; bersiaplah untuk gelombang berkah yang menderu.",
+                    "Seseorang dari masa lalu akan membawa kabar yang membuka jalan kesuksesanmu.",
+                    "Keberanianmu mengambil risiko kali ini akan dibayar tunai oleh semesta.",
+                    "Intuisi yang muncul saat fajar adalah jawaban yang kamu cari. Ikuti itu.",
+                    "Kesehatan mental dan finansialmu akan segera mencapai titik harmonis tertinggi.",
+                    "Angin perubahan bertiup ke arahmu, membawa aroma kemenangan yang sudah dekat."
+                ],
+                hell: [
+                    "Keinginanmu saat ini terhalang oleh kabut ego; bersihkan hati sebelum meminta kembali.",
+                    "Ada pelajaran pahit yang harus ditelan sebelum manisnya doa dapat kau rasakan.",
+                    "Takdir tidak bisa dipaksakan; lepaskan bebanmu atau kau akan hancur oleh genggamanmu sendiri.",
+                    "Frekuensi jiwamu sedang dalam fase pembersihan. Tunggu hingga air jiwamu menjadi tenang.",
+                    "Bukan tidak dikabulkan, namun arah permohonanmu sedang diselaraskan kembali oleh semesta.",
+                    "Setiap penundaan adalah bentuk kasih sayang semesta agar kau tidak salah melangkah.",
+                    "Jangan mengejar bayangan jika kau belum siap berhadapan dengan cahaya yang menyilaukan.",
+                    "Hutang karma lama terdeteksi; selesaikan urusan batinmu terlebih dahulu.",
+                    "Aura disekitarmu terlalu riuh, tenangkan pikiranmu agar doa bisa menembus langit.",
+                    "Bukan pintumu yang tertutup, melainkan langkahmu yang salah arah. Berputarlah.",
+                    "Ada duri dalam keinginanmu yang bisa melukai tanganmu sendiri jika dikabulkan saat ini.",
+                    "Semesta sedang memintamu untuk belajar melepaskan, sebelum ia memberi yang lebih besar.",
+                    "Suara ego terlalu keras sehingga menenggelamkan bisikan suci dari nurani.",
+                    "Kembali ke titik nol, temukan niat murni di balik setiap keinginan yang kau miliki.",
+                    "Ada amarah yang belum tuntas di hatimu; itu adalah tembok yang menghalangi keajaiban.",
+                    "Berhenti membandingkan garis hidupmu dengan orang lain, atau kau akan kehilangan arah.",
+                    "Obsesi berlebihanmu pada hasil justru membuat apa yang kau cari semakin menjauh.",
+                    "Perbaiki hubunganmu dengan orang terdekat sebelum meminta restu dari langit.",
+                    "Tubuhmu lelah, jiwamu redup. Istirahatlah, jangan memaksakan kehendak yang belum matang.",
+                    "Hati-hati dengan lisanmu; energi negatif yang kau lepaskan akan kembali kepadamu."
+                ]
+            },
+            en: {
+                heaven: [
+                    "Your desires align with the universal law of abundance. Light now guides you.",
+                    "Your small steps are now guided by divine intuition that will not fail.",
+                    "Doors once closed will open with the key of sincerity you possess.",
+                    "The stars are conspiring to turn your dreams into reality.",
+                    "Your patience is an investment; time to harvest the fruits of your silent prayers.",
+                    "The universe hears your heart's whisper even when you cannot speak it.",
+                    "The kindness you planted in secret will bear fruits of loud happiness.",
+                    "You are a magnet for miracles; stay on the path of compassion.",
+                    "Good destiny is knocking on your door, open it with a smile and gratitude.",
+                    "The light within you is far brighter than the obstacles in front of you.",
+                    "The resonance of your soul radiates a frequency of infinite prosperity.",
+                    "What you seek is seeking you with an unexpected velocity.",
+                    "Do not fear the darkness, for you yourself are the lighthouse of your future.",
+                    "Your positive energy has attracted the frequency of luck from all corners of the sky.",
+                    "Your cycle of misfortune has ended; prepare for a roaring wave of blessings.",
+                    "Someone from the past will bring news that opens your path to success.",
+                    "Your courage to take risks this time will be paid in full by the universe.",
+                    "The intuition appearing at dawn is the answer you seek. Follow it.",
+                    "Your mental and financial health will soon reach their highest harmonic point.",
+                    "The winds of change are blowing your way, carrying the scent of nearing victory."
+                ],
+                hell: [
+                    "Your desire is blocked by the mist of ego; cleanse your heart before asking again.",
+                    "There are bitter lessons to swallow before the sweetness of prayer can be felt.",
+                    "Destiny cannot be forced; let go of your burden or you will be crushed by your own grip.",
+                    "Your soul frequency is in a cleansing phase. Wait until the waters of your soul calm down.",
+                    "It's not denied, but your direction is being realigned by the universe.",
+                    "Every delay is a form of universal love to keep you from taking the wrong step.",
+                    "Do not chase shadows if you are not ready to face the blinding light.",
+                    "Old karmic debts detected; settle your inner affairs first.",
+                    "The aura around you is too loud, quiet your mind so your prayers can pierce the sky.",
+                    "It is not that your door is closed, but your steps are misdirected. Turn around.",
+                    "There are thorns in your desire that could hurt your own hands if granted now.",
+                    "The universe is asking you to learn to let go before giving you something greater.",
+                    "The voice of ego is too loud, drowning out the sacred whispers of conscience.",
+                    "Return to ground zero, find the pure intention behind every wish you hold.",
+                    "There is unresolved anger in your heart; it is the wall blocking your miracles.",
+                    "Stop comparing your lifeline with others, or you will lose your way.",
+                    "Your excessive obsession with the outcome is pushing what you seek further away.",
+                    "Heal your relationships with those closest to you before seeking blessings from above.",
+                    "Your body is tired, your soul is dim. Rest, do not force a will that isn't ripe yet.",
+                    "Be careful with your words; the negative energy you release will return to you."
+                ]
+            }
+        };
+
+
+        const zodiacs = [
+            { n: "Capricorn", m: 1, d: 20, i: "♑" }, { n: "Aquarius", m: 2, d: 19, i: "♒" },
+            { n: "Pisces", m: 3, d: 20, i: "♓" }, { n: "Aries", m: 4, d: 20, i: "♈" },
+            { n: "Taurus", m: 5, d: 21, i: "♉" }, { n: "Gemini", m: 6, d: 21, i: "♊" },
+            { n: "Cancer", m: 7, d: 23, i: "♋" }, { n: "Leo", m: 8, d: 23, i: "♌" },
+            { n: "Virgo", m: 9, d: 23, i: "♍" }, { n: "Libra", m: 10, d: 23, i: "♎" },
+            { n: "Scorpio", m: 11, d: 22, i: "♏" }, { n: "Sagittarius", m: 12, d: 22, i: "♐" },
+            { n: "Capricorn", m: 12, d: 31, i: "♑" }
+        ];
+
+        let stream, mediaRecorder, chunks = [];
+        let userData = {};
+        let audioCtx, masterGain, bgmOsc;
+
+        function initAudio() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioCtx.createGain();
+            masterGain.connect(audioCtx.destination);
+            masterGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        }
+
+        function playLofiBGM(type) {
+            initAudio();
+            if(bgmOsc) { bgmOsc.stop(); }
+            const nodes = [];
+            const createLofiPad = (freq, vol, detune = 0) => {
+                const osc = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.detune.setValueAtTime(detune, audioCtx.currentTime);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(type === 'heaven' ? 800 : 400, audioCtx.currentTime);
+                g.gain.setValueAtTime(0, audioCtx.currentTime);
+                g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 3);
+                osc.connect(filter);
+                filter.connect(g);
+                g.connect(masterGain);
+                osc.start();
+                nodes.push(osc);
+            };
+            if(type === 'heaven') {
+                createLofiPad(261.63, 0.1, 5); createLofiPad(329.63, 0.08, -5); createLofiPad(392.00, 0.08, 2);
+            } else {
+                createLofiPad(55.00, 0.15, 10); createLofiPad(82.41, 0.1, -10);
+            }
+            bgmOsc = { stop: () => nodes.forEach(n => n.stop()) };
+        }
+
         function playSfx(freq, type, dur, vol) {
-            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
-            osc.type = type; osc.frequency.value = freq;
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
             g.gain.setValueAtTime(vol, audioCtx.currentTime);
             g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
-            osc.connect(g); g.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + dur);
+            osc.connect(g);
+            g.connect(masterGain);
+            osc.start();
+            osc.stop(audioCtx.currentTime + dur);
         }
 
-        function calculateAge(dob) {
-            const diff = Date.now() - new Date(dob).getTime();
-            return Math.abs(new Date(diff).getUTCFullYear() - 1970);
+        function getZodiac(dateStr) {
+            const d = new Date(dateStr);
+            const m = d.getMonth() + 1;
+            const day = d.getDate();
+            const z = zodiacs.find(z => (m < z.m) || (m === z.m && day <= z.d));
+            return z ? `${z.i} ${z.n}` : "✨ Unknown";
         }
 
-        function acceptWarning() { playSfx(800, 'sine', 0.2, 0.1); document.getElementById('warning-modal').style.display = 'none'; document.getElementById('main-menu').style.display = 'flex'; }
-
-        let stream, isRecording = false;
-        let userData = {};
+        function acceptWarning() { 
+            initAudio();
+            document.getElementById('warning-modal').style.display = 'none'; 
+            document.getElementById('main-menu').style.display = 'flex'; 
+        }
 
         async function startRitual() {
-            playSfx(800, 'sine', 0.2, 0.1);
             userData.name = document.getElementById('userName').value;
             userData.dob = document.getElementById('userDOB').value;
-            if(!userData.name || !userData.dob) return alert("Data tidak lengkap!");
+            if(!userData.name || !userData.dob) return alert(currentLang === 'id' ? "Identitas diperlukan." : "Identity required.");
+            
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('camera-section').style.display = 'flex';
+            
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true });
                 document.getElementById('webcam').srcObject = stream;
-            } catch (err) { alert("Kamera tidak aktif."); }
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = e => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    document.getElementById('recorded-video').src = URL.createObjectURL(blob);
+                };
+            } catch (err) { alert("Camera access denied."); }
         }
 
         function toggleRecord() {
             const shutter = document.getElementById('shutter');
-            const aiUi = document.getElementById('ai-ui');
-            if (!isRecording) {
-                isRecording = true;
-                playSfx(400, 'square', 0.3, 0.1);
+            if (mediaRecorder.state === "inactive") {
+                mediaRecorder.start();
                 shutter.classList.add('recording');
                 document.getElementById('face-scanner-container').style.display = 'block';
-                aiUi.style.display = 'block';
-                setInterval(() => { if(isRecording) document.getElementById('vibration-val').innerText = (Math.random()*600).toFixed(2) + "Hz"; }, 100);
+                document.getElementById('ai-ui').style.display = 'block';
+                playSfx(440, 'sine', 0.1, 0.1);
+                setInterval(() => { if(mediaRecorder.state === "recording") document.getElementById('vibration-val').innerText = (432 + Math.random()*5).toFixed(2) + "Hz"; }, 150);
             } else {
-                playSfx(300, 'square', 0.3, 0.1);
+                mediaRecorder.stop();
                 if(stream) stream.getTracks().forEach(t => t.stop());
                 document.getElementById('camera-section').style.display = 'none';
                 document.getElementById('loading-section').style.display = 'flex';
-                createParticles();
                 startAscensionLoading();
-            }
-        }
-
-        function createParticles() {
-            const container = document.getElementById('particle-container');
-            for(let i=0; i<20; i++) {
-                const p = document.createElement('div');
-                p.className = 'soul-particle';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDelay = Math.random() * 2 + 's';
-                p.style.opacity = Math.random();
-                container.appendChild(p);
             }
         }
 
         function startAscensionLoading() {
             let prog = 0;
-            const texts = ["MENGIRIM DOA...", "MENEMBUS AWAN...", "MENUJU GERBANG...", "FINALIZING..."];
+            const container = document.getElementById('particle-container');
+            for(let i=0; i<15; i++) {
+                const p = document.createElement('div'); p.className = 'soul-particle';
+                p.style.left = Math.random() * 100 + 'vw'; p.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(p);
+            }
             function update() {
-                let speed = Math.random() < 0.15 ? 0.2 : Math.random() * 2.5;
-                prog += speed;
+                prog += Math.random() * 1.5;
                 if (prog >= 100) {
-                    prog = 100;
                     document.getElementById('progress-percent').innerText = "100%";
-                    setTimeout(showResult, 1000);
+                    setTimeout(showResult, 1200);
                     return;
                 }
                 document.getElementById('progress-percent').innerText = Math.floor(prog) + "%";
-                document.getElementById('loading-txt').innerText = texts[Math.floor((prog/100) * texts.length)];
-                setTimeout(update, 50 + Math.random() * 100);
+                setTimeout(update, 80);
             }
             update();
         }
@@ -256,46 +474,53 @@
             const isAccepted = Math.random() > 0.45;
             document.getElementById('loading-section').style.display = 'none';
             document.getElementById('result-section').style.display = 'flex';
+            document.getElementById('playback-container').style.display = 'block';
             
             const title = document.getElementById('res-title');
             const mot = document.getElementById('motivation-box');
             const bg = document.getElementById('main-bg');
 
+            const birth = new Date(userData.dob);
+            const age = new Date().getFullYear() - birth.getFullYear();
+
             document.getElementById('info-name').innerText = userData.name.toUpperCase();
-            document.getElementById('info-age').innerText = calculateAge(userData.dob);
+            document.getElementById('info-age').innerText = age;
+            document.getElementById('info-zodiac').innerText = getZodiac(userData.dob);
 
             if(isAccepted) {
-                playSfx(523, 'sine', 1.5, 0.2);
+                playLofiBGM('heaven');
                 bg.className = "universe-bg heaven-mode";
-                title.innerText = "DITERIMA";
-                title.className = "res-text-main heaven-title-font";
-                mot.className = "heaven-mot-font motivation-anim";
-                mot.innerText = `"${motivations.heaven[Math.floor(Math.random() * motivations.heaven.length)]}"`;
+                title.innerText = translations[currentLang].res_blessed;
+                title.style.color = "#82ccff";
+                mot.className = "heaven-mot-font";
+                const pool = motivations[currentLang].heaven;
+                mot.innerText = `"${pool[Math.floor(Math.random() * pool.length)]}"`;
                 document.getElementById('success-ui').style.display = 'block';
                 runTimer();
             } else {
-                playSfx(60, 'sawtooth', 2, 0.3);
+                playLofiBGM('hell');
                 bg.className = "universe-bg hell-mode";
-                title.innerText = "DITOLAK";
-                title.className = "res-text-main hell-title-font";
-                mot.className = "hell-mot-font motivation-anim";
-                mot.innerText = `"${motivations.hell[Math.floor(Math.random() * motivations.hell.length)]}"`;
+                title.innerText = translations[currentLang].res_delayed;
+                title.style.color = "#ff4d4d";
+                mot.className = "hell-mot-font";
+                const pool = motivations[currentLang].hell;
+                mot.innerText = `"${pool[Math.floor(Math.random() * pool.length)]}"`;
             }
         }
 
         function runTimer() {
-            const randomType = Math.random();
-            let addedTime = randomType < 0.3 ? Math.random() * 86400000 : randomType < 0.7 ? Math.random() * 604800000 : Math.random() * 31536000000;
-            const target = new Date(Date.now() + addedTime);
-            document.getElementById('target-date').innerText = target.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+            const dayInMs = 86400000;
+            const target = new Date(Date.now() + (Math.random() * 100 * dayInMs));
+            document.getElementById('target-date').innerText = target.toLocaleDateString(currentLang === 'id' ? 'id-ID' : 'en-US', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+            
             setInterval(() => {
                 const diff = target - new Date();
-                if(diff <= 0) { document.getElementById('countdown').innerText = "SAATNYA TIBA"; return; }
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
+                if(diff <= 0) { document.getElementById('countdown').innerText = currentLang === 'id' ? "SAATNYA TIBA" : "THE TIME HAS COME"; return; }
+                const d = Math.floor(diff / dayInMs);
+                const h = Math.floor((diff % dayInMs) / 3600000);
                 const m = Math.floor((diff % 3600000) / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById('countdown').innerText = `${d}h ${h}m ${m}s ${s}s`;
+                document.getElementById('countdown').innerText = `${d}d ${h}h ${m}m ${s}s`;
             }, 1000);
         }
     </script>
