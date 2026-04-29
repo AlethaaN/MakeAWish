@@ -3,273 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Security Pro V16 - Elite</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <title>Divine Whisper - Soul Ascension</title>
     <style>
-        :root { 
-            --neon: #00ff88; 
-            --danger: #ff3b30;
-            --glass: rgba(15, 15, 15, 0.8); 
+        :root {
+            --glass: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.15);
+            --accent: #007AFF;
         }
-        body { margin: 0; background: #000; color: white; font-family: -apple-system, system-ui, sans-serif; overflow: hidden; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; color: white; font-family: 'Segoe UI', sans-serif; }
+
+        /* BG Universe */
+        .universe-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0f172a 0%, #000 100%); z-index: -2; transition: all 3s ease; }
+        .star-field { position: absolute; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)); background-size: 200px 200px; animation: drift 100s linear infinite; opacity: 0.3; z-index: -1; }
+        @keyframes drift { from { transform: translate(-20%, -20%); } to { transform: translate(0, 0); } }
+
+        /* WARNING MODAL */
+        #warning-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 100; }
+        .warning-box { max-width: 320px; padding: 30px; background: #111; border: 1px solid #ff3b30; border-radius: 25px; text-align: center; }
+
+        /* CAMERA SECTION */
+        #camera-section { display: none; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 80px; }
+        #face-scanner-container { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 260px; height: 320px; display: none; z-index: 5; }
+        .corner { position: absolute; width: 35px; height: 35px; border: 3px solid var(--accent); }
+        .top-left { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 15px 0 0 0; }
+        .top-right { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 15px 0 0; }
+        .bottom-left { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 15px; }
+        .bottom-right { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 15px 0; }
+        .scanning-line { position: absolute; width: 100%; height: 2px; background: var(--accent); box-shadow: 0 0 15px var(--accent); top: 0; animation: scanLineMove 2.5s ease-in-out infinite; }
+        .ai-text-ui { position: absolute; width: 100%; text-align: center; top: 15%; font-size: 10px; letter-spacing: 3px; color: var(--accent); display: none; }
+        @keyframes scanLineMove { 0% { top: 0%; } 100% { top: 100%; } }
+
+        /* LOADING: SOUL ASCENSION EFFECT */
+        #loading-section { display: none; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .soul-particle { 
+            position: absolute; bottom: -20px; width: 4px; height: 15px; 
+            background: white; border-radius: 2px; opacity: 0;
+            filter: blur(1px); animation: ascend 2s infinite linear;
+        }
+        @keyframes ascend {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        .orb-loader { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, #fff, transparent); filter: blur(10px); animation: pulseOrb 1.5s infinite alternate; z-index: 2; }
+        @keyframes pulseOrb { from { transform: scale(0.9); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
+
+        /* RESULT THEMES & ANIMATIONS */
+        .heaven-mode { background: radial-gradient(circle at center, #fff9e6 0%, #7ec8ff 50%, #1e3a8a 100%) !important; }
+        .hell-mode { background: radial-gradient(circle at center, #300 0%, #100 70%, #000 100%) !important; }
+
+        /* IMPROVED TEXT ANIMATIONS */
+        .res-text-main { 
+            font-size: 3em; margin-bottom: 10px; opacity: 0;
+            animation: textEntrance 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards, float 6s ease-in-out infinite;
+        }
+        @keyframes textEntrance {
+            from { letter-spacing: -10px; filter: blur(10px); opacity: 0; transform: scale(0.8); }
+            to { letter-spacing: 4px; filter: blur(0); opacity: 1; transform: scale(1); }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .heaven-title-font { font-family: 'Garamond', serif !important; text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+        .heaven-mot-font { font-family: 'Playfair Display', serif !important; font-style: italic; }
         
-        #view-container { position: relative; width: 100vw; height: 60vh; background: #000; overflow: hidden; }
-        video { width: 100%; height: 100%; object-fit: cover; transition: filter 0.3s; }
-        canvas#overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        .hell-title-font { font-family: 'Impact', sans-serif !important; color: #ff3b30 !important; text-shadow: 0 0 10px black; }
+        .hell-mot-font { font-family: 'Special Elite', monospace !important; color: #ff3b30 !important; }
 
-        /* HUD Custom Icons */
-        .hud {
-            position: absolute; top: 20px; left: 20px; right: 20px;
-            display: flex; justify-content: space-between; z-index: 10;
-        }
-        .badge { 
-            background: var(--glass); padding: 8px 14px; border-radius: 10px; 
-            font-size: 11px; font-weight: 600; letter-spacing: 1px;
-            backdrop-filter: blur(15px); border: 1px solid var(--border);
-        }
+        /* UI ELEMENTS */
+        .fullscreen-container { width: 100%; height: 100%; position: relative; z-index: 10; padding: 40px; }
+        .content-wrapper { width: 100%; max-width: 380px; text-align: center; margin: 0 auto; }
+        input { width: 100%; padding: 18px; margin: 10px 0; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; color: white; outline: none; }
+        .btn-primary { width: 100%; padding: 18px; margin-top: 15px; background: white; color: black; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; }
+        video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: -1; }
 
-        /* Mode Selector Custom SVG */
-        .mode-selector {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 20px; z-index: 20; background: var(--glass);
-            padding: 10px 25px; border-radius: 40px; backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-        }
-        .mode-btn {
-            background: none; border: none; fill: #888; cursor: pointer; 
-            transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 5px;
-        }
-        .mode-btn.active { fill: var(--neon); transform: scale(1.1); }
-        .mode-btn span { font-size: 7px; color: white; text-transform: uppercase; font-weight: bold; }
-        .mode-btn svg { width: 22px; height: 22px; }
+        .shutter-btn { width: 85px; height: 85px; border: 4px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; }
+        .shutter-inner { width: 65px; height: 65px; background: white; border-radius: 50%; transition: 0.3s; }
+        .recording .shutter-inner { background: #ff3b30; border-radius: 12px; transform: scale(0.7); }
 
-        /* Control Panel */
-        .ui-panel {
-            height: 40vh; background: #000; display: flex; 
-            flex-direction: column; align-items: center; padding-top: 25px;
-        }
-        .status-txt { font-size: 10px; color: var(--neon); margin-bottom: 20px; font-weight: bold; letter-spacing: 2px; }
-        
-        .main-controls { display: flex; gap: 15px; margin-bottom: 20px; }
-        .btn-ios {
-            background: white; color: black; border: none;
-            padding: 14px 28px; border-radius: 25px; font-weight: 700;
-            font-size: 12px; letter-spacing: 0.5px; transition: 0.3s;
-        }
-        .btn-ios.active-sensor { background: var(--danger); color: white; }
-        .btn-secondary {
-            background: #1a1a1a; color: white; border: 1px solid #333;
-            padding: 14px 20px; border-radius: 25px; font-size: 11px;
-        }
-        .btn-secondary.on { border-color: #007aff; color: #007aff; }
-
-        #gallery {
-            width: 100%; height: 85px; display: flex; 
-            padding: 0 20px; gap: 10px; overflow-x: auto; box-sizing: border-box;
-        }
-        .captured-img { height: 75px; border-radius: 8px; border: 1px solid #222; }
-
-        /* Tamper Alert */
-        #tamper-alert {
-            position: absolute; inset: 0; background: rgba(255, 59, 48, 0.2);
-            display: none; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 30; backdrop-filter: blur(8px);
-        }
-
-        /* Filter Modes */
-        .f-night { filter: brightness(1.6) contrast(1.2) sepia(1) hue-rotate(90deg); }
-        .f-thermal { filter: contrast(2) saturate(5) hue-rotate(240deg); }
-        .f-mono { filter: grayscale(1) contrast(1.2); }
+        .info-card { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; margin-top: 20px; text-align: left; font-size: 0.8em; border: 1px solid rgba(255,255,255,0.1); }
+        .motivation-anim { opacity: 0; animation: fadeInMot 3s forwards 1.8s; }
+        @keyframes fadeInMot { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="view-container">
-        <div class="hud">
-            <div id="clock-txt" class="badge">00:00</div>
-            <div id="info-mode" class="badge" style="color: var(--neon);">SYSTEM ACTIVE</div>
-        </div>
+    <div id="main-bg" class="universe-bg"><div class="star-field"></div></div>
 
-        <div class="mode-selector">
-            <button class="mode-btn active" onclick="changeMode('std', this)">
-                <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
-                <span>Standard</span>
-            </button>
-            <button class="mode-btn" onclick="changeMode('night', this)">
-                <svg viewBox="0 0 24 24"><path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"/></svg>
-                <span>Night</span>
-            </button>
-            <button class="mode-btn" onclick="changeMode('thermal', this)">
-                <svg viewBox="0 0 24 24"><path d="M17 15.58V5c0-2.76-2.24-5-5-5S7 2.24 7 5v10.58c-1.79 1.3-3 3.41-3 5.79 0 3.97 3.13 7.13 7.11 7.13 3.96 0 7.11-3.13 7.11-7.13 0-2.38-1.21-4.49-3.11-5.79zM12 3c1.1 0 2 .9 2 2v6h-4V5c0-1.1.9-2 2-2z"/></svg>
-                <span>Thermal</span>
-            </button>
+    <div id="warning-modal">
+        <div class="warning-box">
+            <h2 style="color:#ff3b30">PERINGATAN</h2>
+            <p style="margin: 15px 0; font-size: 0.9em;">Ritual ini akan menarik energi aura wajah. Harap bijaksana dalam menerima takdir.</p>
+            <button class="btn-primary" onclick="acceptWarning()">LANJUTKAN</button>
+            <button class="btn-primary" style="background:transparent; color:#888; border:1px solid #333" onclick="location.href='https://google.com'">BATAL</button>
         </div>
-        
-        <div id="tamper-alert">
-            <h2 style="margin:0; font-size: 22px; letter-spacing: 2px;">⚠️ TAMPER</h2>
-            <p style="margin:5px 0; font-size: 11px;">SENSOR OBSTRUCTED</p>
-        </div>
-
-        <video id="webcam" autoplay playsinline muted></video>
-        <canvas id="overlay"></canvas>
     </div>
 
-    <div class="ui-panel">
-        <div id="target-info" class="status-txt">READY TO SCAN</div>
-        <div class="main-controls">
-            <button id="toggleBtn" class="btn-ios">START SENSOR</button>
-            <button id="autoPhotoBtn" class="btn-secondary on">AUTO PHOTO: ON</button>
+    <div id="main-menu" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; justify-content:center;">
+        <div class="content-wrapper">
+            <h1 style="font-weight: 200; letter-spacing: 5px; margin-bottom: 40px;">DIVINE WHISPER</h1>
+            <input type="text" id="userName" placeholder="Nama Lengkap">
+            <input type="date" id="userDOB">
+            <button class="btn-primary" onclick="startRitual()">MULAI RITUAL</button>
         </div>
-        <div id="gallery"></div>
+    </div>
+
+    <div id="camera-section" class="fullscreen-container">
+        <div id="ai-ui" class="ai-text-ui">SCANNING SOUL VIBRATION... <br> <span id="vibration-val">0.00Hz</span></div>
+        <video id="webcam" autoplay muted playsinline></video>
+        <div id="face-scanner-container">
+            <div class="corner top-left"></div><div class="corner top-right"></div>
+            <div class="corner bottom-left"></div><div class="corner bottom-right"></div>
+            <div class="scanning-line"></div>
+        </div>
+        <div class="shutter-btn" onclick="toggleRecord()" id="shutter"><div class="shutter-inner">🪐</div></div>
+    </div>
+
+    <div id="loading-section" class="fullscreen-container">
+        <div id="particle-container"></div>
+        <div class="orb-loader"></div>
+        <h2 id="loading-txt" style="font-weight: 200; letter-spacing: 3px; z-index: 3;">MENGIRIM DOA...</h2>
+        <p id="progress-percent" style="font-size: 2.5em; font-weight: 100; margin-top: 10px; z-index: 3;">0%</p>
+    </div>
+
+    <div id="result-section" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; justify-content:center;">
+        <div class="content-wrapper">
+            <h2 id="res-title" class="res-text-main"></h2>
+            <p id="motivation-box" class="motivation-anim" style="margin-bottom: 30px; line-height: 1.6; font-size: 1.2em;"></p>
+
+            <div id="success-ui" style="display: none; margin-bottom: 20px;">
+                <p style="font-size: 0.7em; opacity: 0.6; letter-spacing: 2px;">TERKABUL PADA:</p>
+                <h3 id="target-date" style="margin: 5px 0;"></h3>
+                <div id="countdown" style="font-size: 2em; font-weight: 100;"></div>
+            </div>
+
+            <div class="info-card">
+                <p>NAMA: <span id="info-name" style="color:gold"></span></p>
+                <p>UMUR: <span id="info-age" style="font-weight:bold"></span> TAHUN</p>
+            </div>
+            <button class="btn-primary" onclick="location.reload()" style="margin-top: 30px;">KEMBALI</button>
+        </div>
     </div>
 
     <script>
-        const video = document.getElementById('webcam');
-        const overlay = document.getElementById('overlay');
-        const ctx = overlay.getContext('2d');
-        const toggleBtn = document.getElementById('toggleBtn');
-        const autoPhotoBtn = document.getElementById('autoPhotoBtn');
-        const targetInfo = document.getElementById('target-info');
-        const gallery = document.getElementById('gallery');
-        const tamperUI = document.getElementById('tamper-alert');
+        const motivations = {
+            heaven: [
+                "Keinginanmu tentang masa depan cerah telah didengar oleh malaikat penjaga.",
+                "Cahaya dalam hatimu menghancurkan segala rintangan yang ada di depan mata.",
+                "Semesta tidak hanya mengabulkan, tapi juga memberikan yang lebih baik dari pintamu.",
+                "Ketulusanmu dalam berharap adalah frekuensi terkuat yang pernah kami scan.",
+                "Jawaban yang kau cari sedang dirajut oleh takdir yang indah.",
+                "Keberuntungan besar akan segera mengetuk pintu rumahmu.",
+                "Setiap niat baikmu adalah benih kebahagiaan yang kini mulai tumbuh."
+            ],
+            hell: [
+                "Keinginanmu berakar pada ego; semesta perlu waktu untuk membersihkannya.",
+                "Ada kegelapan yang menempel pada permohonanmu. Tenangkan jiwamu.",
+                "Pintu langit tertutup rapat karena niat yang kurang tulus terdeteksi.",
+                "Jangan meminta apa yang belum siap kau tanggung bebannya.",
+                "Frekuensi jiwamu terlalu rendah untuk menembus gerbang keajaiban.",
+                "Karma sedang menguji kesabaranmu sebelum memberikan jawaban.",
+                "Permohonan ini tertunda demi melindungimu dari hal yang tidak kau ketahui."
+            ]
+        };
 
-        let isTracking = false, lastFrame = null, canCapture = true;
-        let isAutoOn = true;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let osc = null;
-
-        // Jam iOS style
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock-txt').innerText = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-        }, 1000);
-
-        function changeMode(mode, btn) {
-            video.className = '';
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if(mode === 'night') video.classList.add('f-night');
-            if(mode === 'thermal') video.classList.add('f-thermal');
-            if(mode === 'mono') video.classList.add('f-mono');
+        function playSfx(freq, type, dur, vol) {
+            const osc = audioCtx.createOscillator(); const g = audioCtx.createGain();
+            osc.type = type; osc.frequency.value = freq;
+            g.gain.setValueAtTime(vol, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + dur);
         }
 
-        async function init() {
+        function calculateAge(dob) {
+            const diff = Date.now() - new Date(dob).getTime();
+            return Math.abs(new Date(diff).getUTCFullYear() - 1970);
+        }
+
+        function acceptWarning() { playSfx(800, 'sine', 0.2, 0.1); document.getElementById('warning-modal').style.display = 'none'; document.getElementById('main-menu').style.display = 'flex'; }
+
+        let stream, isRecording = false;
+        let userData = {};
+
+        async function startRitual() {
+            playSfx(800, 'sine', 0.2, 0.1);
+            userData.name = document.getElementById('userName').value;
+            userData.dob = document.getElementById('userDOB').value;
+            if(!userData.name || !userData.dob) return alert("Data tidak lengkap!");
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('camera-section').style.display = 'flex';
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                video.srcObject = stream;
-                video.onloadedmetadata = () => {
-                    overlay.width = video.videoWidth;
-                    overlay.height = video.videoHeight;
-                };
-            } catch (err) { targetInfo.innerText = "CAMERA ERROR"; }
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                document.getElementById('webcam').srcObject = stream;
+            } catch (err) { alert("Kamera tidak aktif."); }
         }
 
-        function playAlarm(active, type) {
-            if (active) {
-                if (osc) return;
-                osc = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                osc.type = (type === 'tamper') ? 'square' : 'sine';
-                osc.frequency.value = (type === 'tamper') ? 400 : 1000;
-                g.gain.value = 0.03;
-                osc.connect(g); g.connect(audioCtx.destination);
-                osc.start();
-            } else { if (osc) { osc.stop(); osc = null; } }
-        }
-
-        function takePhoto() {
-            if (!canCapture || !isAutoOn) return;
-            canCapture = false;
-
-            const snap = document.createElement('canvas');
-            snap.width = video.videoWidth; snap.height = video.videoHeight;
-            const sCtx = snap.getContext('2d');
-            sCtx.filter = getComputedStyle(video).filter;
-            sCtx.drawImage(video, 0, 0);
-
-            const img = new Image();
-            img.src = snap.toDataURL('image/jpeg');
-            img.className = 'captured-img';
-            gallery.prepend(img);
-
-            setTimeout(() => { canCapture = true; }, 4000);
-        }
-
-        // Kembalikan ke Logika Awal yang Responsif
-        function sensorProcess() {
-            if (!isTracking) return;
-
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = 60; tempCanvas.height = 45;
-            const tCtx = tempCanvas.getContext('2d');
-            tCtx.drawImage(video, 0, 0, 60, 45);
-            const pixels = tCtx.getImageData(0,0,60,45).data;
-
-            let totalBright = 0;
-            for (let i = 0; i < pixels.length; i += 4) {
-                totalBright += (pixels[i] + pixels[i+1] + pixels[i+2]) / 3;
-            }
-            let avg = totalBright / (pixels.length / 4);
-
-            if (avg < 7) {
-                tamperUI.style.display = 'flex';
-                playAlarm(true, 'tamper');
-                targetInfo.innerText = "LENS COVERED";
+        function toggleRecord() {
+            const shutter = document.getElementById('shutter');
+            const aiUi = document.getElementById('ai-ui');
+            if (!isRecording) {
+                isRecording = true;
+                playSfx(400, 'square', 0.3, 0.1);
+                shutter.classList.add('recording');
+                document.getElementById('face-scanner-container').style.display = 'block';
+                aiUi.style.display = 'block';
+                setInterval(() => { if(isRecording) document.getElementById('vibration-val').innerText = (Math.random()*600).toFixed(2) + "Hz"; }, 100);
             } else {
-                tamperUI.style.display = 'none';
-                if (lastFrame) {
-                    let diff = 0;
-                    let minX=60, maxX=0, minY=45, maxY=0;
-                    for (let i = 0; i < pixels.length; i += 4) {
-                        // Sensitivitas awal (40)
-                        if (Math.abs(pixels[i] - lastFrame[i]) > 40) {
-                            diff++;
-                            let x=(i/4)%60; let y=Math.floor((i/4)/60);
-                            if(x<minX) minX=x; if(x>maxX) maxX=x;
-                            if(y<minY) minY=y; if(y>maxY) maxY=y;
-                        }
-                    }
-
-                    if (diff > 25) { // Threshold deteksi awal
-                        playAlarm(true, 'normal');
-                        targetInfo.innerText = "MOTION DETECTED!";
-                        
-                        const sx = overlay.width/60; const sy = overlay.height/45;
-                        ctx.clearRect(0,0,overlay.width, overlay.height);
-                        ctx.strokeStyle = "#00ff88"; 
-                        ctx.lineWidth = 3;
-                        // Kotak tanpa animasi delay (langsung snap ke target)
-                        ctx.strokeRect(minX*sx, minY*sy, (maxX-minX)*sx, (maxY-minY)*sy);
-                        
-                        takePhoto();
-                    } else {
-                        playAlarm(false);
-                        ctx.clearRect(0,0,overlay.width, overlay.height);
-                        targetInfo.innerText = "SCANNING...";
-                    }
-                }
+                playSfx(300, 'square', 0.3, 0.1);
+                if(stream) stream.getTracks().forEach(t => t.stop());
+                document.getElementById('camera-section').style.display = 'none';
+                document.getElementById('loading-section').style.display = 'flex';
+                createParticles();
+                startAscensionLoading();
             }
-            lastFrame = pixels;
-            requestAnimationFrame(sensorProcess);
         }
 
-        toggleBtn.onclick = () => {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            isTracking = !isTracking;
-            toggleBtn.innerText = isTracking ? "STOP SENSOR" : "START SENSOR";
-            toggleBtn.classList.toggle('active-sensor', isTracking);
-            if (isTracking) sensorProcess();
-        };
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            for(let i=0; i<20; i++) {
+                const p = document.createElement('div');
+                p.className = 'soul-particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                p.style.opacity = Math.random();
+                container.appendChild(p);
+            }
+        }
 
-        autoPhotoBtn.onclick = () => {
-            isAutoOn = !isAutoOn;
-            autoPhotoBtn.innerText = `AUTO PHOTO: ${isAutoOn ? 'ON' : 'OFF'}`;
-            autoPhotoBtn.classList.toggle('on', isAutoOn);
-        };
+        function startAscensionLoading() {
+            let prog = 0;
+            const texts = ["MENGIRIM DOA...", "MENEMBUS AWAN...", "MENUJU GERBANG...", "FINALIZING..."];
+            function update() {
+                let speed = Math.random() < 0.15 ? 0.2 : Math.random() * 2.5;
+                prog += speed;
+                if (prog >= 100) {
+                    prog = 100;
+                    document.getElementById('progress-percent').innerText = "100%";
+                    setTimeout(showResult, 1000);
+                    return;
+                }
+                document.getElementById('progress-percent').innerText = Math.floor(prog) + "%";
+                document.getElementById('loading-txt').innerText = texts[Math.floor((prog/100) * texts.length)];
+                setTimeout(update, 50 + Math.random() * 100);
+            }
+            update();
+        }
 
-        init();
+        function showResult() {
+            const isAccepted = Math.random() > 0.45;
+            document.getElementById('loading-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'flex';
+            
+            const title = document.getElementById('res-title');
+            const mot = document.getElementById('motivation-box');
+            const bg = document.getElementById('main-bg');
+
+            document.getElementById('info-name').innerText = userData.name.toUpperCase();
+            document.getElementById('info-age').innerText = calculateAge(userData.dob);
+
+            if(isAccepted) {
+                playSfx(523, 'sine', 1.5, 0.2);
+                bg.className = "universe-bg heaven-mode";
+                title.innerText = "DITERIMA";
+                title.className = "res-text-main heaven-title-font";
+                mot.className = "heaven-mot-font motivation-anim";
+                mot.innerText = `"${motivations.heaven[Math.floor(Math.random() * motivations.heaven.length)]}"`;
+                document.getElementById('success-ui').style.display = 'block';
+                runTimer();
+            } else {
+                playSfx(60, 'sawtooth', 2, 0.3);
+                bg.className = "universe-bg hell-mode";
+                title.innerText = "DITOLAK";
+                title.className = "res-text-main hell-title-font";
+                mot.className = "hell-mot-font motivation-anim";
+                mot.innerText = `"${motivations.hell[Math.floor(Math.random() * motivations.hell.length)]}"`;
+            }
+        }
+
+        function runTimer() {
+            const randomType = Math.random();
+            let addedTime = randomType < 0.3 ? Math.random() * 86400000 : randomType < 0.7 ? Math.random() * 604800000 : Math.random() * 31536000000;
+            const target = new Date(Date.now() + addedTime);
+            document.getElementById('target-date').innerText = target.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+            setInterval(() => {
+                const diff = target - new Date();
+                if(diff <= 0) { document.getElementById('countdown').innerText = "SAATNYA TIBA"; return; }
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('countdown').innerText = `${d}h ${h}m ${m}s ${s}s`;
+            }, 1000);
+        }
     </script>
 </body>
 </html>
