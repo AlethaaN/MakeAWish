@@ -16,7 +16,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #000; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; color: white; font-family: 'Segoe UI', sans-serif; }
 
-        /* AUDIO TOGGLE */
+        /* AUDIO & SETTINGS TOGGLE */
         .audio-ctrl {
             position: fixed;
             top: 20px;
@@ -30,31 +30,33 @@
             backdrop-filter: blur(5px);
         }
 
-        /* LANGUAGE SELECTOR */
-        .lang-select-box {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+        .settings-ctrl {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+            background: var(--glass);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(5px);
         }
+
+        .lang-select-box { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .lang-option {
             background: var(--glass);
             border: 1px solid var(--border);
             color: white;
-            padding: 6px 15px;
+            padding: 8px 12px;
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.8em;
+            font-size: 1.5em; /* Diperbesar agar bendera terlihat elegan */
+            line-height: 1;
         }
-        .lang-option.active {
-            background: white;
-            color: black;
-            border-color: white;
-        }
+        .lang-option.active { background: white; border-color: white; transform: scale(1.1); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        /* BG Universe */
         .universe-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #0f172a 0%, #000 100%); z-index: -2; transition: all 3s ease; }
         .star-field { position: absolute; width: 200%; height: 200%; background-image: radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)), radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)); background-size: 200px 200px; animation: drift 100s linear infinite; opacity: 0.3; z-index: -1; }
         @keyframes drift { from { transform: translate(-20%, -20%); } to { transform: translate(0, 0); } }
@@ -64,38 +66,33 @@
         .warning-box { width: 100%; max-width: 450px; text-align: center; }
         .warning-tag { color: #ff3b30; letter-spacing: 5px; font-size: 0.8em; margin-bottom: 10px; font-weight: bold; }
 
-        /* CAMERA SECTION */
+        /* SETTINGS MODAL */
+        #settings-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; backdrop-filter: blur(10px); }
+        .settings-box { width: 100%; max-width: 350px; text-align: center; background: rgba(20,20,20,0.9); padding: 30px; border-radius: 20px; border: 1px solid var(--border); }
+
         #camera-section { display: none; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 80px; }
         #face-scanner-container { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 260px; height: 320px; display: none; z-index: 5; }
         .corner { position: absolute; width: 35px; height: 35px; border: 3px solid var(--accent); }
-        .top-left { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 15px 0 0 0; }
-        .top-right { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 15px 0 0; }
-        .bottom-left { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 15px; }
-        .bottom-right { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 15px 0; }
+        .top-left { top: 0; left: 0; border-radius: 15px 0 0 0; border-right: none; border-bottom: none; }
+        .top-right { top: 0; right: 0; border-radius: 0 15px 0 0; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 0; left: 0; border-radius: 0 0 0 15px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 0; right: 0; border-radius: 0 0 15px 0; border-left: none; border-top: none; }
         .scanning-line { position: absolute; width: 100%; height: 2px; background: var(--accent); box-shadow: 0 0 15px var(--accent); top: 0; animation: scanLineMove 2.5s ease-in-out infinite; }
         .ai-text-ui { position: absolute; width: 100%; text-align: center; top: 15%; font-size: 10px; letter-spacing: 3px; color: var(--accent); display: none; }
         @keyframes scanLineMove { 0% { top: 0%; } 100% { top: 100%; } }
 
-        /* LOADING */
         #loading-section { display: none; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        .soul-particle { position: absolute; bottom: -20px; width: 4px; height: 15px; background: white; border-radius: 2px; opacity: 0; filter: blur(1px); animation: ascend 2s infinite linear; }
-        @keyframes ascend { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh); opacity: 0; } }
         .orb-loader { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, #fff, transparent); filter: blur(10px); animation: pulseOrb 1.5s infinite alternate; z-index: 2; }
         @keyframes pulseOrb { from { transform: scale(0.9); opacity: 0.6; } to { transform: scale(1.1); opacity: 1; } }
 
-        /* RESULT THEMES */
-        .heaven-mode { background: radial-gradient(circle at center, #2e5171 0%, #0d1b2a 100%) !important; }
-        .hell-mode { background: radial-gradient(circle at center, #2a0505 0%, #000 100%) !important; }
         .res-text-main { font-size: 3em; margin-bottom: 10px; opacity: 0; animation: textEntrance 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards, float 6s ease-in-out infinite; }
         @keyframes textEntrance { from { letter-spacing: -10px; filter: blur(10px); opacity: 0; transform: scale(0.8); } to { letter-spacing: 4px; filter: blur(0); opacity: 1; transform: scale(1); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* UI ELEMENTS */
         .fullscreen-container { width: 100%; height: 100%; position: relative; z-index: 10; padding: 20px; overflow-y: auto; scrollbar-width: none; }
-        .fullscreen-container::-webkit-scrollbar { display: none; }
         .content-wrapper { width: 100%; max-width: 380px; text-align: center; margin: 0 auto; }
         input { width: 100%; padding: 18px; margin: 10px 0; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; color: white; outline: none; }
-        .btn-primary { width: 100%; padding: 18px; margin-top: 15px; background: white; color: black; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-primary { width: 100%; padding: 18px; margin-top: 15px; background: white; color: black; border: none; border-radius: 25px; font-weight: 700; cursor: pointer; }
         .btn-secondary { width: 100%; padding: 15px; margin-top: 10px; background: transparent; color: #ff3b30; border: 1px solid #ff3b30; border-radius: 25px; font-weight: 600; cursor: pointer; }
         video#webcam { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: -1; }
 
@@ -105,30 +102,46 @@
 
         .info-card { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 15px; margin-top: 20px; text-align: left; font-size: 0.85em; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
         .prob-badge { display: inline-block; padding: 5px 15px; background: #82ccff; color: black; border-radius: 20px; font-weight: bold; margin-top: 10px; }
-        
-        .video-container-premium { position: relative; margin: 25px 0; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.5); background: #111; }
+        .video-container-premium { position: relative; margin: 25px 0; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: #111; }
         .video-playback { width: 100%; display: block; object-fit: cover; aspect-ratio: 1/1; }
 
-        .heaven-mot-font { font-family: 'Georgia', serif; font-style: italic; color: #e2f3ff; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
-        .hell-mot-font { font-family: 'Courier New', monospace; color: #ff5e5e; text-shadow: 0 0 10px rgba(255,0,0,0.2); }
+        .heaven-mode { background: radial-gradient(circle at center, #2e5171 0%, #0d1b2a 100%) !important; }
+        .hell-mode { background: radial-gradient(circle at center, #2a0505 0%, #000 100%) !important; }
+        .heaven-mot-font { font-family: 'Georgia', serif; font-style: italic; color: #e2f3ff; }
+        .hell-mot-font { font-family: 'Courier New', monospace; color: #ff5e5e; }
     </style>
 </head>
 <body>
 
+    <div class="settings-ctrl" onclick="toggleSettings()" id="settings-toggle">⚙️</div>
     <div class="audio-ctrl" onclick="toggleVoice()" id="voice-toggle">🔊</div>
     <div id="main-bg" class="universe-bg"><div class="star-field"></div></div>
 
+    <div id="settings-modal">
+        <div class="settings-box">
+            <h3 style="margin-bottom: 20px; font-weight: 400; letter-spacing: 2px;">LANGUAGE SETTINGS</h3>
+            <div class="lang-select-box">
+                <button class="lang-option active" id="btn-id" onclick="changeLang('id')">🇮🇩</button>
+                <button class="lang-option" id="btn-en" onclick="changeLang('en')">🇺🇸</button>
+                <button class="lang-option" id="btn-kr" onclick="changeLang('kr')">🇰🇷</button>
+                <button class="lang-option" id="btn-pt" onclick="changeLang('pt')">🇧🇷</button>
+                <button class="lang-option" id="btn-ja" onclick="changeLang('ja')">🇯🇵</button>
+                <button class="lang-option" id="btn-th" onclick="changeLang('th')">🇹🇭</button>
+                <button class="lang-option" id="btn-hi" onclick="changeLang('hi')">🇮🇳</button>
+                <button class="lang-option" id="btn-es" onclick="changeLang('es')">🇪🇸</button>
+                <button class="lang-option" id="btn-ar" onclick="changeLang('ar')">🇸🇦</button>
+                <button class="lang-option" id="btn-zh" onclick="changeLang('zh')">🇨🇳</button>
+            </div>
+            <button class="btn-primary" style="padding: 12px; margin-top: 10px;" onclick="toggleSettings()">APPLY & CLOSE</button>
+        </div>
+    </div>
+
     <div id="warning-modal">
         <div class="warning-box">
-            <div class="lang-select-box">
-                <button class="lang-option active" id="btn-id" onclick="changeLang('id')">ID</button>
-                <button class="lang-option" id="btn-en" onclick="changeLang('en')">EN</button>
-                <button class="lang-option" id="btn-kr" onclick="changeLang('kr')">KR</button>
-            </div>
             <div class="warning-tag" data-key="warn_age">⚠️ 17+ ONLY</div>
-            <h1 data-key="warn_title" style="font-size: 1.5em; margin-bottom: 20px; letter-spacing: 2px;">RITUAL PENYELARASAN</h1>
+            <h1 data-key="warn_title">RITUAL PENYELARASAN</h1>
             <p id="warn-desc-text" data-key="warn_desc" style="color: #888; line-height: 1.6; font-size: 0.9em; margin-bottom: 25px;">
-                Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda.<br><br>
+                Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda saat ini.<br><br>
                 <b>Peringatan:</b> Hasil simulasi bersifat absolut bagi jiwa. Jangan teruskan jika kondisi psikis sedang tidak stabil.
             </p>
             <button class="btn-primary" onclick="acceptWarning()" data-key="warn_btn">MEMULAI RITUAL</button>
@@ -146,7 +159,7 @@
     </div>
 
     <div id="camera-section" class="fullscreen-container">
-        <div id="ai-ui" class="ai-text-ui"><span data-key="cam_status">MENANGKAP RESONANSI JIWA...</span> <br> <span id="vibration-val">0.00Hz</span></div>
+        <div id="ai-ui" class="ai-text-ui"><span data-key="cam_status">MENANGKAP RESONANSI JIWA...</span> <br> <span id="vibration-val" style="font-size: 1.5em; margin-top: 5px; display: inline-block;">0.00Hz</span></div>
         <video id="webcam" autoplay muted playsinline></video>
         <div id="face-scanner-container">
             <div class="corner top-left"></div><div class="corner top-right"></div>
@@ -154,14 +167,13 @@
             <div class="scanning-line"></div>
         </div>
         <div class="shutter-btn" onclick="toggleRecord()" id="shutter"><div class="shutter-inner"></div></div>
-        <p data-key="cam_hint" style="margin-top: 15px; font-size: 0.7em; opacity: 0.6; letter-spacing: 1px;">TAHAN UNTUK MENGIRIM PESAN KE SEMESTA</p>
+        <p data-key="cam_hint" style="margin-top: 15px; font-size: 0.7em; opacity: 0.6;">TAHAN UNTUK MENGIRIM PESAN KE SEMESTA</p>
     </div>
 
     <div id="loading-section" class="fullscreen-container">
-        <div id="particle-container"></div>
         <div class="orb-loader"></div>
         <h2 id="loading-txt" data-key="load_txt" style="font-weight: 200; letter-spacing: 3px; z-index: 3;">MENGIRIM DOA...</h2>
-        <p id="progress-percent" style="font-size: 2.5em; font-weight: 100; margin-top: 10px; z-index: 3;">0%</p>
+        <p id="progress-percent" style="font-size: 2.5em; font-weight: 100; margin-top: 10px;">0%</p>
     </div>
 
     <div id="result-section" class="fullscreen-container" style="display:none; flex-direction:column; align-items:center; ">
@@ -175,8 +187,8 @@
             </div>
 
             <div id="success-ui" style="display: none; margin-bottom: 20px;">
-                <p data-key="res_manifest" style="font-size: 0.7em; opacity: 0.6; letter-spacing: 2px;">PROYEKSI MANIFESTASI PADA:</p>
-                <h3 id="target-date" style="margin: 5px 0; color: #82ccff;"></h3>
+                <p data-key="res_manifest" style="font-size: 0.7em; opacity: 0.6;">PROYEKSI MANIFESTASI PADA:</p>
+                <h3 id="target-date" style="color: #82ccff;"></h3>
                 <div id="countdown" style="font-size: 1.5em; font-weight: 100;"></div>
             </div>
 
@@ -187,13 +199,13 @@
             </div>
 
             <div id="playback-container" style="display:none;">
-                <p data-key="res_archive" style="margin-top: 25px; font-size: 0.6em; letter-spacing: 3px; color: #aaa; text-transform: uppercase;">Arsip Frekuensi Suara</p>
+                <p data-key="res_archive" style="margin-top: 25px; font-size: 0.6em; letter-spacing: 3px; color: #aaa;">Arsip Frekuensi Suara</p>
                 <div class="video-container-premium">
                     <video id="recorded-video" class="video-playback" controls></video>
                 </div>
             </div>
 
-            <button class="btn-primary" onclick="location.reload()" data-key="res_retry" style="margin-top: 20px; margin-bottom: 50px;">ULANGI RITUAL</button>
+            <button class="btn-primary" onclick="location.reload()" data-key="res_retry">ULANGI RITUAL</button>
         </div>
     </div>
 
@@ -201,175 +213,119 @@
         let currentLang = 'id';
         let isVoiceEnabled = true;
         let speechSynth = window.speechSynthesis;
-        
+        let currentAudio = null; 
+        let hzInterval = null;
+
         const translations = {
             id: {
-                warn_age: "⚠️ KHUSUS 17+",
-                warn_title: "RITUAL PENYELARASAN",
-                warn_desc: "Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda.<br><br><b>Peringatan:</b> Hasil simulasi bersifat absolut bagi jiwa. Jangan teruskan jika kondisi psikis sedang tidak stabil.",
-                warn_btn: "MEMULAI RITUAL",
-                warn_cancel: "BATAL / KEMBALI",
-                menu_name_placeholder: "Nama Lengkap",
-                menu_btn: "MULAI RITUAL",
-                cam_status: "MENANGKAP RESONANSI JIWA...",
-                cam_hint: "TAHAN UNTUK MENGIRIM PESAN KE SEMESTA",
-                load_txt: "MENGIRIM DOA...",
-                res_manifest: "PROYEKSI MANIFESTASI PADA:",
-                res_prob: "PROBABILITAS MANIFESTASI",
-                info_name: "NAMA",
-                info_age: "USIA",
-                info_years: "TAHUN",
-                info_zod: "ZODIAK",
-                res_archive: "ARSIP FREKUENSI SUARA",
-                res_retry: "ULANGI RITUAL",
-                res_blessed: "DIRESTUI",
-                res_delayed: "TERTUNDA",
-                voice_lang: "id-ID"
+                warn_age: "⚠️ KHUSUS 17+", warn_title: "RITUAL PENYELARASAN", warn_desc: "Ritual ini akan menarik resonansi dari getaran wajah dan suara Anda. Segala manifestasi yang muncul adalah refleksi dari energi bawah sadar Anda saat ini.<br><br><b>Peringatan:</b> Hasil simulasi bersifat absolut bagi jiwa. Jangan teruskan jika kondisi psikis sedang tidak stabil.",
+                warn_btn: "MEMULAI RITUAL", warn_cancel: "BATAL / KEMBALI", menu_name_placeholder: "Nama Lengkap", menu_btn: "MULAI RITUAL", cam_status: "MENANGKAP RESONANSI JIWA...", cam_hint: "TAHAN UNTUK MENGIRIM PESAN KE SEMESTA", load_txt: "MENGIRIM DOA...", res_manifest: "PROYEKSI MANIFESTASI PADA:", res_prob: "PROBABILITAS MANIFESTASI", info_name: "NAMA", info_age: "USIA", info_years: "TAHUN", info_zod: "ZODIAK", res_archive: "ARSIP FREKUENSI SUARA", res_retry: "ULANGI RITUAL", res_blessed: "DIRESTUI", res_delayed: "TERTUNDA", audio_file: "warn_id.mp3"
             },
             en: {
-                warn_age: "⚠️ 17+ ONLY",
-                warn_title: "ALIGNMENT RITUAL",
-                warn_desc: "This ritual draws resonance from your facial and vocal vibrations. Every manifestation is a reflection of your subconscious energy.<br><br><b>Warning:</b> Results are absolute in simulation. Do not proceed if your mental state is unstable.",
-                warn_btn: "START RITUAL",
-                warn_cancel: "CANCEL / GO BACK",
-                menu_name_placeholder: "Full Name",
-                menu_btn: "BEGIN RITUAL",
-                cam_status: "CAPTURING SOUL RESONANCE...",
-                cam_hint: "HOLD TO SEND MESSAGE TO UNIVERSE",
-                load_txt: "SENDING PRAYERS...",
-                res_manifest: "MANIFESTATION PROJECTED ON:",
-                res_prob: "MANIFESTATION PROBABILITY",
-                info_name: "NAME",
-                info_age: "AGE",
-                info_years: "YEARS",
-                info_zod: "ZODIAC",
-                res_archive: "VOICE FREQUENCY ARCHIVE",
-                res_retry: "REPEAT RITUAL",
-                res_blessed: "BLESSED",
-                res_delayed: "DELAYED",
-                voice_lang: "en-US"
+                warn_age: "⚠️ 17+ ONLY", warn_title: "ALIGNMENT RITUAL", warn_desc: "This ritual draws resonance from your facial and vocal vibrations. Every manifestation is a reflection of your subconscious energy.<br><br><b>Warning:</b> Results are absolute in simulation. Do not proceed if your mental state is unstable.",
+                warn_btn: "START RITUAL", warn_cancel: "CANCEL / GO BACK", menu_name_placeholder: "Full Name", menu_btn: "BEGIN RITUAL", cam_status: "CAPTURING SOUL RESONANCE...", cam_hint: "HOLD TO SEND MESSAGE TO UNIVERSE", load_txt: "SENDING PRAYERS...", res_manifest: "MANIFESTATION PROJECTED ON:", res_prob: "MANIFESTATION PROBABILITY", info_name: "NAME", info_age: "AGE", info_years: "YEARS", info_zod: "ZODIAC", res_archive: "VOICE FREQUENCY ARCHIVE", res_retry: "REPEAT RITUAL", res_blessed: "BLESSED", res_delayed: "DELAYED", audio_file: "warn_en.mp3"
             },
             kr: {
-                warn_age: "⚠️ 17세 이상 전용",
-                warn_title: "정렬 의식",
-                warn_desc: "이 의식은 당신의 얼굴과 목소리 진동에서 공명을 끌어냅니다. 모든 결과는 당신의 잠재의식 에너지를 반영합니다.<br><br><b>경고:</b> 결과는 영혼에 절대적입니다. 심리 상태가 불안정할 경우 계속하지 마십시오.",
-                warn_btn: "의식 시작",
-                warn_cancel: "취소 / 돌아가기",
-                menu_name_placeholder: "풀네임",
-                menu_btn: "의식 시작",
-                cam_status: "영혼의 공명 캡처 중...",
-                cam_hint: "우주에 메시지를 보내려면 누르세요",
-                load_txt: "기도를 보내는 중...",
-                res_manifest: "현현 예상 날짜:",
-                res_prob: "현현 확률",
-                info_name: "이름",
-                info_age: "나이",
-                info_years: "세",
-                info_zod: "별자리",
-                res_archive: "음성 주파수 아카이브",
-                res_retry: "의식 재시도",
-                res_blessed: "축복받음",
-                res_delayed: "지연됨",
-                voice_lang: "ko-KR"
+                warn_age: "⚠️ 17세 이상 전용", warn_title: "정렬 의식", warn_desc: "이 의식은 당신의 얼굴과 목소리 진동에서 공명을 끌어냅니다. 모든 결과는 당신의 잠재의식 에너지를 반영합니다.<br><br><b>경고:</b> 결과는 영혼에 절대적입니다. 심리 상태가 불안정할 경우 계속하지 마십시오.",
+                warn_btn: "의식 시작", warn_cancel: "취소 / 돌아가기", menu_name_placeholder: "풀네임", menu_btn: "의식 시작", cam_status: "영혼의 공명 캡처 중...", cam_hint: "우주에 메시지를 보내려면 누르세요", load_txt: "기도를 보내는 중...", res_manifest: "현현 예상 날짜:", res_prob: "현현 확률", info_name: "이름", info_age: "나이", info_years: "세", info_zod: "별자리", res_archive: "음성 주파수 아카이브", res_retry: "의식 재시도", res_blessed: "축복받음", res_delayed: "지연됨", audio_file: "warn_kr.mp3"
+            },
+            pt: {
+                warn_age: "⚠️ APENAS 17+", warn_title: "RITUAL DE ALINHAMENTO", warn_desc: "Este ritual extrai ressonância das suas vibrações faciais e vocais. Toda manifestação é um reflexo da sua energia subconsciente.<br><br><b>Aviso:</b> Os resultados são absolutos na simulação. Não prossiga se seu estado mental estiver instável.",
+                warn_btn: "INICIAR RITUAL", warn_cancel: "CANCELAR / VOLTAR", menu_name_placeholder: "Nome Completo", menu_btn: "COMEÇAR RITUAL", cam_status: "CAPTURANDO RESSONÂNCIA...", cam_hint: "SEGURE PARA ENVIAR MENSAGEM", load_txt: "ENVIANDO ORAÇÕES...", res_manifest: "MANIFESTACIÓN PROJETADA EM:", res_prob: "PROBABILIDADE DE MANIFESTAÇÃO", info_name: "NOME", info_age: "IDADE", info_years: "ANOS", info_zod: "ZODÍACO", res_archive: "ARQUIVO DE FREQUÊNCIA VOCAL", res_retry: "REPETIR RITUAL", res_blessed: "ABENÇOADO", res_delayed: "ATRASADO", audio_file: "warn_pt.mp3"
+            },
+            ja: {
+                warn_age: "⚠️ 17歳以上限定", warn_title: "アライメントの儀式", warn_desc: "この儀式は、あなたの顔と声の振動から共鳴を引き出します。現れるすべての事象は、あなたの潜在意識のエネルギーの反映です。<br><br><b>警告:</b> シミュレーションにおける結果は絶対です。精神状態が不安定な場合は続行しないでください。",
+                warn_btn: "儀式を開始", warn_cancel: "キャンセル / 戻る", menu_name_placeholder: "フルネーム", menu_btn: "儀式を始める", cam_status: "魂の共鳴をキャプチャ中...", cam_hint: "宇宙にメッセージを送るために長押し", load_txt: "祈りを送信中...", res_manifest: "具現化の予定日:", res_prob: "具現化の確率", info_name: "名前", info_age: "年齢", info_years: "歳", info_zod: "星座", res_archive: "音声周波数アーカイブ", res_retry: "儀式を繰り返す", res_blessed: "祝福された", res_delayed: "遅延", audio_file: "warn_ja.mp3"
+            },
+            th: {
+                warn_age: "⚠️ 17+ เท่านั้น", warn_title: "พิธีกรรมการปรับตัว", warn_desc: "พิธีกรรมนี้ดึงเสียงสะท้อนจากใบหน้าและเสียงของคุณ ทุกสิ่งที่เกิดขึ้นเป็นภาพสะท้อนของพลังงานใต้สำนึกของคุณ<br><br><b>คำเตือน:</b> ผลลัพธ์ถือเป็นที่สิ้นสุดในแบบจำลอง อย่าดำเนินการต่อหากสภาพจิตใจของคุณไม่มั่นคง",
+                warn_btn: "เริ่มพิธีกรรม", warn_cancel: "ยกเลิก / กลับ", menu_name_placeholder: "ชื่อ-นามสกุล", menu_btn: "เริ่มพิธีกรรม", cam_status: "กำลังจับเสียงสะท้อนของจิตวิญญาณ...", cam_hint: "กดค้างไว้เพื่อส่งข้อความถึงจักรวาล", load_txt: "กำลังส่งคำอธิษฐาน...", res_manifest: "การปรากฏตัวที่คาดการณ์ไว้ในวันที่:", res_prob: "ความน่าจะเป็น", info_name: "ชื่อ", info_age: "อายุ", info_years: "ปี", info_zod: "ราศี", res_archive: "ที่เก็บถาวรความถี่เสียง", res_retry: "ทำพิธีซ้ำ", res_blessed: "ได้รับพร", res_delayed: "ล่าช้า", audio_file: "warn_th.mp3"
+            },
+            hi: {
+                warn_age: "⚠️ केवल 17+", warn_title: "संरेखण अनुष्ठान", warn_desc: "यह अनुष्ठान आपके चेहरे और मुखर कंपन से प्रतिध्वनि खींचता है। हर अभिव्यक्ति आपकी अवचेतन ऊर्जा का प्रतिबिंब है।<br><br><b>चेतावनी:</b> सिमुलेशन में परिणाम पूर्ण हैं। यदि आपकी मानसिक स्थिति अस्थिर है तो आगे न बढ़ें।",
+                warn_btn: "अनुष्ठान शुरू करें", warn_cancel: "रद्द करें / वापस जाएं", menu_name_placeholder: "पूरा नाम", menu_btn: "अनुष्ठान शुरू करें", cam_status: "आत्मा की प्रतिध्वनि को कैद किया जा रहा है...", cam_hint: "ब्रह्मांड को संदेश भेजने के लिए दबाए रखें", load_txt: "प्रार्थनाएं भेजी जा रही हैं...", res_manifest: "प्रकटीकरण का अनुमानित समय:", res_prob: "प्रकटीकरण की संभावना", info_name: "नाम", info_age: "आयु", info_years: "वर्ष", info_zod: "राशि चक्र", res_archive: "आवाज आवृत्ति संग्रह", res_retry: "अनुष्ठान दोहराएं", res_blessed: "आशीर्वाद", res_delayed: "विलंबित", audio_file: "warn_hi.mp3"
+            },
+            es: {
+                warn_age: "⚠️ SOLO 17+", warn_title: "RITUAL DE ALINEACIÓN", warn_desc: "Este ritual extrae resonancia de tus vibraciones faciales y vocales. Toda manifestación es un reflejo de tu energía subconsciente.<br><br><b>Advertencia:</b> Los resultados son absolutos en la simulación. No procedas si tu estado mental es inestable.",
+                warn_btn: "INICIAR RITUAL", warn_cancel: "CANCELAR / VOLVER", menu_name_placeholder: "Nombre Completo", menu_btn: "COMENZAR RITUAL", cam_status: "CAPTURANDO RESONANCIA...", cam_hint: "MANTÉN PULSADO PARA ENVIAR MENSAJE", load_txt: "ENVIANDO ORACIONES...", res_manifest: "MANIFESTACIÓN PROYECTADA EN:", res_prob: "PROBABILIDAD DE MANIFESTACIÓN", info_name: "NOMBRE", info_age: "EDAD", info_years: "AÑOS", info_zod: "ZODÍACO", res_archive: "ARCHIVO DE FRECUENCIA VOCAL", res_retry: "REPETIR RITUAL", res_blessed: "BENDECIDO", res_delayed: "RETRASADO", audio_file: "warn_es.mp3"
+            },
+            ar: {
+                warn_age: "⚠️ 17+ فقط", warn_title: "طقوس المحاذاة", warn_desc: "تستمد هذه الطقوس رنينا من اهتزازات وجهك وصوتك. كل تجلٍ هو انعكاس لطاقة عقلك الباطن.<br><br><b>تحذير:</b> النتائج مطلقة في المحاكاة. لا تتابع إذا كانت حالتك النفسية غير مستقرة.",
+                warn_btn: "ابدأ الطقوس", warn_cancel: "إلغاء / عودة", menu_name_placeholder: "الاسم الكامل", menu_btn: "ابدأ الطقوس", cam_status: "التقاط رنين الروح...", cam_hint: "اضغط باستمرار لإرسال رسالة إلى الكون", load_txt: "إرسال الصلوات...", res_manifest: "التجلي المتوقع في:", res_prob: "احتمالية التجلي", info_name: "الاسم", info_age: "العمر", info_years: "سنة", info_zod: "البرج", res_archive: "أرشيف تردد الصوت", res_retry: "كرر الطقوس", res_blessed: "مبارك", res_delayed: "مؤجل", audio_file: "warn_ar.mp3"
+            },
+            zh: {
+                warn_age: "⚠️ 仅限17岁以上", warn_title: "协调仪式", warn_desc: "这个仪式从你的面部和声音振动中提取共鸣。每一次显现都是你潜意识能量的反映。<br><br><b>警告：</b> 在模拟中结果是绝对的。如果你的精神状态不稳定，请勿继续。",
+                warn_btn: "开始仪式", warn_cancel: "取消 / 返回", menu_name_placeholder: "全名", menu_btn: "开始仪式", cam_status: "捕捉灵魂共鸣...", cam_hint: "按住以向宇宙发送信息", load_txt: "发送祈祷...", res_manifest: "预计显现日期:", res_prob: "显现概率", info_name: "姓名", info_age: "年龄", info_years: "岁", info_zod: "星座", res_archive: "声音频率档案", res_retry: "重复仪式", res_blessed: "受祝福", res_delayed: "延迟", audio_file: "warn_zh.mp3"
             }
         };
 
-                const motivations = {
-            id: {
-                heaven: [
-                    "Keinginanmu selaras dengan hukum kelimpahan semesta. Cahaya kini menuntunmu.",
-                    "Setiap langkah kecilmu kini dipandu oleh intuisi ilahi yang tidak akan pernah salah.",
-                    "Pintu yang selama ini tertutup akan terbuka dengan kunci ketulusan yang kau miliki.",
-                    "Semesta sedang berkonspirasi untuk mewujudkan ambisimu menjadi kenyataan dalam waktu dekat.",
-                    "Kesabaranmu menghadapi badai akan segera dibayar dengan pelangi keberuntungan.",
-                    "Resonansi jiwamu memancarkan frekuensi kemakmuran; uang dan peluang mulai mendekat.",
-                    "Engkau adalah magnet bagi keajaiban; tetaplah rendah hati karena puncak sudah terlihat.",
-                    "Apa yang kau cari sedang mencarimu dengan kecepatan yang tidak terduga.",
-                    "Investasi batinmu telah matang; saatnya memanen hasil dari doa-doa sunyimu selama ini.",
-                    "Energi positifmu telah menembus blokade takdir; jalanmu kini bersih dan terang."
-                ],
-                hell: [
-                    "Keinginanmu terhalang oleh kabut ego; bersihkan hati dan niat sebelum meminta kembali.",
-                    "Ada pelajaran pahit yang harus ditelan sebagai bekal agar kau tidak hancur saat di puncak nanti.",
-                    "Takdir tidak bisa dipaksakan; lepaskan beban masa lalu atau kau akan tenggelam bersamanya.",
-                    "Frekuensi jiwamu sedang dalam fase pembersihan. Berhenti sejenak, jangan mengejar bayangan.",
-                    "Bukan tidak dikabulkan, namun arah permohonanmu sedang diselaraskan kembali oleh semesta.",
-                    "Setiap penundaan adalah bentuk perlindungan agar kau tidak salah langkah di masa depan.",
-                    "Jangan mengejar cahaya jika kau belum siap berdamai dengan kegelapan di dalam dirimu.",
-                    "Aura di sekitarmu terlalu riuh oleh ambisi buta; tenangkan pikiran agar suara langit bisa terdengar.",
-                    "Ada hutang batin yang belum selesai; selesaikan urusanmu dengan manusia sebelum mengetuk pintu langit.",
-                    "Berhenti membandingkan garis hidupmu dengan orang lain, atau kau akan kehilangan arah aslimu."
-                ]
-            },
-            en: {
-                heaven: [
-                    "Your desires align with universal abundance. Divine light now guides your path.",
-                    "Every small step you take is now guided by an infallible intuition.",
-                    "Doors that were once locked will swing open with the key of your sincerity.",
-                    "The universe is conspiring to turn your highest ambitions into reality very soon.",
-                    "Your patience through the storm is about to be rewarded with a rainbow of luck.",
-                    "Your soul's resonance radiates a frequency of prosperity; opportunities are drawing near.",
-                    "You are a magnet for miracles; stay grounded as the summit is finally in sight.",
-                    "What you seek is actively seeking you with an unexpected and powerful velocity.",
-                    "Your spiritual investment has matured; it is time to harvest the fruits of your silent prayers.",
-                    "Your positive energy has broken through destiny's blockade; your path is now clear and bright."
-                ],
-                hell: [
-                    "Your desire is blocked by the mist of ego; cleanse your heart before asking again.",
-                    "There are bitter lessons to swallow so you won't collapse when you reach the top.",
-                    "Destiny cannot be forced; let go of past burdens or you will sink with them.",
-                    "Your soul frequency is in a cleansing phase. Pause and stop chasing shadows.",
-                    "It is not denied, but the direction of your request is being realigned by the universe.",
-                    "Every delay is a form of protection to keep you from taking a wrong turn in the future.",
-                    "Do not chase the light if you are not ready to face the darkness within yourself.",
-                    "The aura around you is too noisy with blind ambition; quiet your mind to hear the heavens.",
-                    "There is unresolved inner debt; settle your affairs before knocking on heaven's door.",
-                    "Stop comparing your lifeline with others, or you will lose your own true direction."
-                ]
-            },
-            kr: {
-                heaven: [
-                    "당신의 욕망은 우주의 풍요와 일치합니다. 이제 신성한 빛이 당신의 길을 인도합니다.",
-                    "당신이 내딛는 모든 작은 발걸음은 결코 틀리지 않는 신성한 직관의 안내를 받습니다.",
-                    "진심이라는 열쇠로 한때 닫혀 있던 문들이 활짝 열릴 것입니다.",
-                    "우주는 당신의 가장 큰 야망을 곧 현실로 만들기 위해 움직이고 있습니다.",
-                    "폭풍을 견뎌낸 당신의 인내심은 곧 행운의 무지개로 보상받을 것입니다.",
-                    "당신의 영혼의 공명은 번영의 주파수를 발산하며, 기회들이 가까이 다가오고 있습니다.",
-                    "당신은 기적을 끌어당기는 자석입니다. 정상이 보이니 겸손함을 유지하십시오.",
-                    "당신이 찾는 것은 예상치 못한 빠른 속도로 당신을 찾고 있습니다.",
-                    "당신의 정신적 투자가 결실을 맺었습니다. 이제 침묵의 기도의 결과를 거둘 때입니다.",
-                    "당신의 긍정적인 에너지가 운명의 봉쇄를 뚫었습니다. 당신의 길은 이제 맑고 밝습니다."
-                ],
-                hell: [
-                    "욕망이 자아의 안개에 가려져 있습니다. 다시 요청하기 전에 마음을 정화하십시오.",
-                    "정상에 올랐을 때 무너지지 않도록 지금 삼켜야 할 쓴 교훈이 있습니다.",
-                    "운명은 강요될 수 없습니다. 과거의 짐을 내려놓지 않으면 함께 침몰할 것입니다.",
-                    "당신의 영혼 주파수는 정화 단계에 있습니다. 잠시 멈추고 그림자를 쫓지 마십시오.",
-                    "거절된 것이 아니라, 당신의 요청 방향이 우주에 의해 재조정되고 있습니다.",
-                    "모든 지연은 미래에 잘못된 길로 들어서지 않도록 보호하는 하나의 형태입니다.",
-                    "내면의 어둠과 화해할 준비가 되지 않았다면 빛을 쫓지 마십시오.",
-                    "주위의 기운이 맹목적인 야망으로 너무 소란스럽습니다. 하늘의 소리를 듣기 위해 마음을 진정시키세요.",
-                    "해결되지 않은 내면의 빚이 있습니다. 하늘의 문을 두드리기 전에 먼저 일을 정리하십시오.",
-                    "자신의 생명선을 다른 사람과 비교하는 것을 멈추십시오. 그렇지 않으면 진정한 방향을 잃게 됩니다."
-                ]
-            }
+        const motivations = {
+            id: { heaven: ["Keinginanmu selaras dengan hukum kelimpahan semesta. Cahaya kini menuntunmu.", "Setiap langkah kecilmu kini dipandu oleh intuisi ilahi.", "Semesta sedang berkonspirasi untuk mewujudkan ambisimu.", "Resonansi jiwamu memancarkan frekuensi kemakmuran.", "Apa yang kau cari sedang mencarimu dengan kecepatan tidak terduga."], hell: ["Keinginanmu terhalang oleh kabut ego; bersihkan hati.", "Ada pelajaran pahit yang harus ditelan agar tidak hancur di puncak.", "Takdir tidak bisa dipaksakan; lepaskan beban masa lalu.", "Bukan tidak dikabulkan, namun arahmu sedang diselaraskan kembali."] },
+            en: { heaven: ["Your desires align with universal abundance. Light guides you.", "The universe is conspiring to turn your highest ambitions into reality soon.", "Your positive energy has broken through; your path is now bright."], hell: ["Your desire is blocked by the mist of ego; cleanse your heart.", "Every delay is a form of protection to keep you from a wrong turn.", "Stop comparing your life with others, or you will lose your direction."] },
+            kr: { heaven: ["당신의 욕망은 우주의 풍요와 일치합니다. 빛이 당신을 인도합니다.", "우주는 당신의 야망을 현실로 만들기 위해 움직이고 있습니다.", "당신의 긍정적인 에너지가 운명을 뚫었습니다. 길이 밝아졌습니다."], hell: ["욕망이 자아의 안개에 가려져 있습니다. 마음을 정화하십시오.", "모든 지연은 미래를 위한 보호입니다. 서두르지 마십시오.", "자신을 다른 사람과 비교하지 마십시오. 방향을 잃게 됩니다."] },
+            pt: { heaven: ["Seus desejos estão alinhados com a abundância do universo. A luz te guia.", "O universo está conspirando a seu favor neste momento.", "A sua energia ressoa prosperidade; o caminho está aberto."], hell: ["Seu desejo está bloqueado pelo ego; limpe seu coração.", "Cada atraso é uma proteção do universo para você.", "Não force o destino; liberte-se das amarras do passado."] },
+            ja: { heaven: ["あなたの願いは宇宙の豊かさと調和しています。光があなたを導きます。", "宇宙はあなたの野心を実現するために動いています。", "あなたの魂の共鳴が繁栄の周波数を放っています。"], hell: ["あなたの願いはエゴの霧に阻まれています。心を浄化してください。", "すべての遅延はあなたを守るためのものです。焦らないでください。", "運命を無理に変えようとしないでください。過去を手放してください。"] },
+            th: { heaven: ["ความปรารถนาของคุณสอดคล้องกับความอุดมสมบูรณ์ของจักรวาล", "จักรวาลกำลังร่วมมือกันเพื่อทำให้ความทะเยอทะยานของคุณเป็นจริง", "พลังงานบวกของคุณได้เปิดเส้นทางที่สดใสแล้ว"], hell: ["ความปรารถนาของคุณถูกปิดกั้นด้วยอีโก้ โปรดชำระล้างจิตใจ", "ความล่าช้าทุกอย่างคือการปกป้องคุณจากเส้นทางที่ผิด", "ปล่อยวางอดีตแล้วคุณจะพบกับความสงบสุข"] },
+            hi: { heaven: ["आपकी इच्छाएं ब्रह्मांड की प्रचुरता के साथ संरेखित हैं।", "ब्रह्मांड आपकी महत्वाकांक्षाओं को वास्तविकता में बदलने की साजिश कर रहा है।", "आपकी सकारात्मक ऊर्जा ने आपकी राह को उज्ज्वल कर दिया है।"], hell: ["आपकी इच्छा अहंकार की धुंध से अवरुद्ध है; अपने दिल को साफ करें।", "हर देरी आपके भविष्य की सुरक्षा के लिए है। जल्दबाजी न करें।", "अतीत के बोझ को छोड़ दें, तभी आप आगे बढ़ पाएंगे।"] },
+            es: { heaven: ["Tus deseos se alinean con la abundancia universal. La luz te guía.", "El universo conspira para convertir tus ambiciones en realidad.", "Tu energía positiva ha despejado el camino hacia tu destino."], hell: ["Tu deseo está bloqueado por la niebla del ego; limpia tu corazón.", "Cada retraso es una forma de protección para evitar que te desvíes.", "El destino no se puede forzar; suelta las cargas del pasado."] },
+            ar: { heaven: ["رغباتك تتوافق مع وفرة الكون. النور يوجهك الآن.", "الكون يتآمر لتحويل طموحاتك إلى حقيقة قريبًا.", "طاقتك الإيجابية أضاءت مسارك بنجاح."], hell: ["رغبتك محجوبة بضباب الغرور؛ طهر قلبك.", "كل تأخير هو شكل من أشكال الحماية لك من اتخاذ منعطف خاطئ.", "لا يمكن إجبار القدر؛ تخلى عن أعباء الماضي."] },
+            zh: { heaven: ["你的愿望与宇宙的丰富相一致。光在指引你。", "宇宙正在密谋将你的野心化为现实。", "你积极的能量已经打破了障碍；你的道路现在很光明。"], hell: ["你的欲望被自我的迷雾所阻挡；请净化你的心。", "每一次延迟都是对你的保护，让你免受错误的转折。", "不要勉强命运；放下过去的重担。"] }
         };
 
+        const ttsLangMap = {
+            id: 'id-ID', en: 'en-US', kr: 'ko-KR', pt: 'pt-BR',
+            ja: 'ja-JP', th: 'th-TH', hi: 'hi-IN', es: 'es-ES',
+            ar: 'ar-SA', zh: 'zh-CN'
+        };
 
-        function toggleVoice() {
-            isVoiceEnabled = !isVoiceEnabled;
-            document.getElementById('voice-toggle').innerText = isVoiceEnabled ? "🔊" : "🔇";
-            if (!isVoiceEnabled) speechSynth.cancel();
+        function toggleSettings() {
+            const modal = document.getElementById('settings-modal');
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                modal.style.display = 'flex';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function playManualAudio(fileName) {
+            if (!isVoiceEnabled) return;
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            currentAudio = new Audio(fileName);
+            currentAudio.play().catch(e => console.log("Audio play blocked: butuh interaksi user pertama kali."));
         }
 
         function speak(text) {
             if (!isVoiceEnabled) return;
             speechSynth.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = translations[currentLang].voice_lang;
+            const voices = speechSynth.getVoices();
+            const targetLocale = ttsLangMap[currentLang];
+            
+            let voice = voices.find(v => v.lang.includes(targetLocale.split('-')[0]) && 
+                                           (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('google')));
+            if (!voice) {
+                voice = voices.find(v => v.lang.includes(targetLocale.split('-')[0]));
+            }
+            
+            if (voice) utterance.voice = voice;
+            utterance.lang = targetLocale; 
             utterance.pitch = 1.1;
-            utterance.rate = 0.9;
+            utterance.rate = 0.85; 
             speechSynth.speak(utterance);
+        }
+
+        function toggleVoice() {
+            isVoiceEnabled = !isVoiceEnabled;
+            document.getElementById('voice-toggle').innerText = isVoiceEnabled ? "🔊" : "🔇";
+            if (!isVoiceEnabled) {
+                speechSynth.cancel();
+                if(currentAudio) currentAudio.pause();
+            } else if (document.getElementById('warning-modal').style.display !== 'none') {
+                playManualAudio(translations[currentLang].audio_file);
+            }
         }
 
         function changeLang(lang) {
@@ -383,54 +339,36 @@
             });
             document.getElementById('userName').placeholder = translations[lang].menu_name_placeholder;
             
-            // Speak warning in new lang
-            const cleanDesc = document.getElementById('warn-desc-text').innerText;
-            speak(cleanDesc);
+            // Audio berbunyi otomatis saat bahasa diganti (karena ada aksi klik dari pengguna)
+            if (isVoiceEnabled) {
+                playManualAudio(translations[lang].audio_file);
+            }
         }
-
-        const zodiacs = [{ n: "Capricorn", m: 1, d: 20, i: "♑" }, { n: "Aquarius", m: 2, d: 19, i: "♒" }, { n: "Pisces", m: 3, d: 20, i: "♓" }, { n: "Aries", m: 4, d: 20, i: "♈" }, { n: "Taurus", m: 5, d: 21, i: "♉" }, { n: "Gemini", m: 6, d: 21, i: "♊" }, { n: "Cancer", m: 7, d: 23, i: "♋" }, { n: "Leo", m: 8, d: 23, i: "♌" }, { n: "Virgo", m: 9, d: 23, i: "♍" }, { n: "Libra", m: 10, d: 23, i: "♎" }, { n: "Scorpio", m: 11, d: 22, i: "♏" }, { n: "Sagittarius", m: 12, d: 22, i: "♐" }, { n: "Capricorn", m: 12, d: 31, i: "♑" }];
 
         let stream, mediaRecorder, chunks = [];
         let userData = {};
-        let audioCtx, masterGain, bgmOsc;
+        let audioCtx;
 
-        function initAudio() {
+        function initAudioContext() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            masterGain = audioCtx.createGain();
-            masterGain.connect(audioCtx.destination);
-            masterGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        }
-
-        function playLofiBGM(type) {
-            initAudio();
-            if(bgmOsc) bgmOsc.stop();
-            const nodes = [];
-            const createLofiPad = (freq, vol) => {
-                const osc = audioCtx.createOscillator();
-                const g = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                g.gain.setValueAtTime(0, audioCtx.currentTime);
-                g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 3);
-                osc.connect(g); g.connect(masterGain);
-                osc.start(); nodes.push(osc);
-            };
-            if(type === 'heaven') createLofiPad(261.63, 0.1); else createLofiPad(55.00, 0.15);
-            bgmOsc = { stop: () => nodes.forEach(n => n.stop()) };
         }
 
         function acceptWarning() { 
-            initAudio();
-            speechSynth.cancel();
+            initAudioContext();
+            if(currentAudio) currentAudio.pause();
             document.getElementById('warning-modal').style.display = 'none'; 
+            
+            // HILANGKAN IKON SETTING SETELAH MASUK MENU UTAMA / INGAME
+            document.getElementById('settings-toggle').style.display = 'none';
+            
             document.getElementById('main-menu').style.display = 'flex'; 
         }
 
         async function startRitual() {
             userData.name = document.getElementById('userName').value;
             userData.dob = document.getElementById('userDOB').value;
-            if(!userData.name || !userData.dob) return alert("Identity required.");
+            if(!userData.name || !userData.dob) return;
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('camera-section').style.display = 'flex';
             try {
@@ -442,7 +380,7 @@
                     const blob = new Blob(chunks, { type: 'video/webm' });
                     document.getElementById('recorded-video').src = URL.createObjectURL(blob);
                 };
-            } catch (err) { alert("Camera error."); }
+            } catch (err) { alert("Akses kamera ditolak."); }
         }
 
         function toggleRecord() {
@@ -452,17 +390,25 @@
                 shutter.classList.add('recording');
                 document.getElementById('face-scanner-container').style.display = 'block';
                 document.getElementById('ai-ui').style.display = 'block';
+                
+                hzInterval = setInterval(() => {
+                    const dynamicHz = (300 + Math.random() * 600).toFixed(2); 
+                    document.getElementById('vibration-val').innerText = dynamicHz + "Hz";
+                }, 100);
+
             } else {
                 mediaRecorder.stop();
+                clearInterval(hzInterval); 
+                document.getElementById('vibration-val').innerText = "0.00Hz"; 
                 if(stream) stream.getTracks().forEach(t => t.stop());
                 document.getElementById('camera-section').style.display = 'none';
                 document.getElementById('loading-section').style.display = 'flex';
-                let prog = 0;
+                let p = 0;
                 let iv = setInterval(() => {
-                    prog += Math.random() * 2;
-                    if(prog >= 100) { clearInterval(iv); showResult(); }
-                    document.getElementById('progress-percent').innerText = Math.floor(prog) + "%";
-                }, 50);
+                    p += 1.8;
+                    if(p >= 100) { clearInterval(iv); showResult(); }
+                    document.getElementById('progress-percent').innerText = Math.floor(p) + "%";
+                }, 60);
             }
         }
 
@@ -473,39 +419,29 @@
             document.getElementById('playback-container').style.display = 'block';
             
             const birth = new Date(userData.dob);
-            const age = new Date().getFullYear() - birth.getFullYear();
             document.getElementById('info-name').innerText = userData.name.toUpperCase();
-            document.getElementById('info-age').innerText = age;
-            const z = zodiacs.find(z => ((birth.getMonth()+1) < z.m) || ((birth.getMonth()+1) === z.m && birth.getDate() <= z.d));
-            document.getElementById('info-zodiac').innerText = z ? `${z.i} ${z.n}` : "✨";
+            document.getElementById('info-age').innerText = new Date().getFullYear() - birth.getFullYear();
 
             const motBox = document.getElementById('motivation-box');
-            const probBox = document.getElementById('prob-container');
-
             if(isAccepted) {
-                playLofiBGM('heaven');
                 document.getElementById('main-bg').className = "universe-bg heaven-mode";
                 document.getElementById('res-title').innerText = translations[currentLang].res_blessed;
                 document.getElementById('res-title').style.color = "#82ccff";
-                const pool = motivations[currentLang].heaven;
-                const txt = pool[Math.floor(Math.random() * pool.length)];
+                const txt = motivations[currentLang].heaven[Math.floor(Math.random()*motivations[currentLang].heaven.length)];
                 motBox.innerText = `"${txt}"`;
                 motBox.className = "heaven-mot-font";
-                probBox.style.display = "block";
-                document.getElementById('prob-val').innerText = Math.floor(60 + Math.random() * 39) + "%";
+                document.getElementById('prob-container').style.display = "block";
+                document.getElementById('prob-val').innerText = Math.floor(65 + Math.random()*34) + "%";
                 document.getElementById('success-ui').style.display = 'block';
                 runTimer();
                 speak(txt);
             } else {
-                playLofiBGM('hell');
                 document.getElementById('main-bg').className = "universe-bg hell-mode";
                 document.getElementById('res-title').innerText = translations[currentLang].res_delayed;
                 document.getElementById('res-title').style.color = "#ff4d4d";
-                const pool = motivations[currentLang].hell;
-                const txt = pool[Math.floor(Math.random() * pool.length)];
+                const txt = motivations[currentLang].hell[Math.floor(Math.random()*motivations[currentLang].hell.length)];
                 motBox.innerText = `"${txt}"`;
                 motBox.className = "hell-mot-font";
-                probBox.style.display = "none";
                 speak(txt);
             }
         }
@@ -516,16 +452,18 @@
             setInterval(() => {
                 const diff = target - new Date();
                 if(diff <= 0) return;
-                const d = Math.floor(diff / 86400000);
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
+                const d = Math.floor(diff/86400000), h = Math.floor((diff%86400000)/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
                 document.getElementById('countdown').innerText = `${d}d ${h}h ${m}m ${s}s`;
             }, 1000);
         }
 
-        // Initial voice for ID
-        window.onload = () => { setTimeout(() => speak(document.getElementById('warn-desc-text').innerText), 1000); };
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+        }
+        
+        window.onload = () => {
+            setTimeout(() => playManualAudio(translations['id'].audio_file), 1000);
+        };
     </script>
 </body>
 </html>
